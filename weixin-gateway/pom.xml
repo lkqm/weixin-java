@@ -37,7 +37,7 @@
         </dependency>
         <dependency>
             <groupId>com.mario6.weixin</groupId>
-            <artifactId>weixin-gateway-starter</artifactId>
+            <artifactId>weixin-gateway-spring-boot-starter</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <!-- util -->

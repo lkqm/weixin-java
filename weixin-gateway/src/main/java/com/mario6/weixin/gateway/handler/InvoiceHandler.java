@@ -1,8 +1,8 @@
 package com.mario6.weixin.gateway.handler;
 
 
-import com.mario6.weixin.springboot.gateway.annotation.WxController;
-import com.mario6.weixin.springboot.gateway.annotation.WxEvent;
+import com.mario6.springboot.weixin.gateway.annotation.WxController;
+import com.mario6.springboot.weixin.gateway.annotation.WxEvent;
 
 /**
  * 电子发票相关事件

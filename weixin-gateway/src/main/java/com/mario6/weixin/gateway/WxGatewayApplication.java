@@ -4,10 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * WxGatewayApplication
- *
- * @author Mario Luo
- * @date 2019.01.04 19:25
+ * 微信网关
  */
 @SpringBootApplication
 public class WxGatewayApplication {
