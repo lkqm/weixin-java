@@ -8,7 +8,7 @@
     ```xml
     <dependency>
         <groupId>com.mario6.weixin</groupId>
-        <artifactId>weixin-starter</artifactId>
+        <artifactId>weixin-spring-boot-starter</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </dependency>
     ```

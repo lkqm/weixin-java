@@ -1,12 +1,12 @@
-package com.mario6.weixin.springboot.starter;
+package com.mario6.springboot.weixin;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.io.Serializable;
 
-import static com.mario6.weixin.springboot.starter.WxMpProperties.PREFIX;
-import static com.mario6.weixin.springboot.starter.WxMpProperties.StorageType.memory;
+import static com.mario6.springboot.weixin.WxMpProperties.PREFIX;
+import static com.mario6.springboot.weixin.WxMpProperties.StorageType.memory;
 
 
 /**

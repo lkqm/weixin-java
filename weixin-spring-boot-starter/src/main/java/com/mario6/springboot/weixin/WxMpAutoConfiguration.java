@@ -1,4 +1,4 @@
-package com.mario6.weixin.springboot.starter;
+package com.mario6.springboot.weixin;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
