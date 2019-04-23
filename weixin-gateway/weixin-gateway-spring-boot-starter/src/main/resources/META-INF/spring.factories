@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.mario6.weixin.gateway.starter.WxGatewayAutoConfiguration
