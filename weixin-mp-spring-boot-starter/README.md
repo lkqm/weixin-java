@@ -1,4 +1,4 @@
-# weixin-starter
+# weixin-mp-spring-boot-starter
 开源的微信开发工具[WxJava](https://github.com/Wechat-Group/WxJava)的spring-boot-starter库
 
 支持: JDK1.7 +
@@ -8,7 +8,7 @@
     ```xml
     <dependency>
         <groupId>com.mario6.weixin</groupId>
-        <artifactId>weixin-spring-boot-starter</artifactId>
+        <artifactId>weixin-mp-spring-boot-starter</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </dependency>
     ```

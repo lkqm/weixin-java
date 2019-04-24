@@ -1,4 +1,4 @@
-package com.mario6.weixin.starter;
+package com.mario6.springboot.weixin.mp;
 
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;

@@ -1,4 +1,4 @@
-package com.mario6.weixin.starter;
+package com.mario6.springboot.weixin.mp;
 
 import lombok.Data;
 
