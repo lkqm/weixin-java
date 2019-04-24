@@ -1,6 +1,6 @@
 package com.mario6.weixin.gateway.core.util;
 
-import com.mario6.weixin.gateway.core.WxMpConfig;
+import com.mario6.weixin.gateway.core.WxGatewayConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -67,7 +67,7 @@ public class WxUtils {
     /**
      * 解析AES密文xml
      */
-    public static String decryptXml(WxMpConfig appConfig, String encryptedXml) {
+    public static String decryptXml(WxGatewayConfig appConfig, String encryptedXml) {
         String cipherText = extractEncryptPart(encryptedXml);
         return decrypt(appConfig, cipherText);
     }
@@ -90,7 +90,7 @@ public class WxUtils {
     /**
      * 对密文xml继续解密
      */
-    private static String decrypt(WxMpConfig appConfig, String cipherText) {
+    private static String decrypt(WxGatewayConfig appConfig, String cipherText) {
         final String appId = appConfig.getAppId();
         final String encodingAesKey = appConfig.getAesKey();
 

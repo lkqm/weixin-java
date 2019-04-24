@@ -11,12 +11,11 @@
     </parent>
 
     <groupId>com.mario6.weixin</groupId>
-    <artifactId>weixin-gateway</artifactId>
+    <artifactId>weixin-gateway-web</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <properties>
         <java.version>1.7</java.version>
-        <dubbo.starter.version>0.1.1</dubbo.starter.version>
     </properties>
 
     <dependencies>
@@ -29,12 +28,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!-- dubbo -->
-        <dependency>
-            <groupId>com.alibaba.boot</groupId>
-            <artifactId>dubbo-spring-boot-starter</artifactId>
-            <version>${dubbo.starter.version}</version>
-        </dependency>
+        <!-- weixin -->
         <dependency>
             <groupId>com.mario6.weixin</groupId>
             <artifactId>weixin-gateway-spring-boot-starter</artifactId>
@@ -46,7 +40,6 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <!-- test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

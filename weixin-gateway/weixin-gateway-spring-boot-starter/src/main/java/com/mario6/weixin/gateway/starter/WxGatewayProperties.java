@@ -15,9 +15,15 @@ public class WxGatewayProperties {
     public static final String PREFIX = "wx.mp";
 
     /**
+     * 开发模式, 不会微信校验消息的准确性
+     */
+    private boolean dev = false;
+
+    /**
      * 微信回掉地址URI
      */
     private String uri = "/wx/mp/api";
+
 
     private AppConfig app = new AppConfig();
 

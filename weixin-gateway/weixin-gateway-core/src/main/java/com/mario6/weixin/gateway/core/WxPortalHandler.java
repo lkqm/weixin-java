@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 @AllArgsConstructor
 public class WxPortalHandler {
 
-    private WxMpConfig config;
+    private WxGatewayConfig config;
 
     private WxRouter router;
 
@@ -38,9 +38,9 @@ public class WxPortalHandler {
         log.info("接收微信请求：[openid=[{}], [signature=[{}], encType=[{}], msgSignature=[{}],"
                         + " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ",
                 openid, signature, encType, msgSignature, timestamp, nonce, requestBody);
-
+        boolean dev = config.isDev();
         String token = config.getToken();
-        if (!WxUtils.checkSignature(token, timestamp, nonce, signature)) {
+        if (!dev && !WxUtils.checkSignature(token, timestamp, nonce, signature)) {
             throw new IllegalArgumentException("非法请求，可能属于伪造的请求！");
         }
 

@@ -1,6 +1,6 @@
 package com.mario6.weixin.gateway.starter;
 
-import com.mario6.weixin.gateway.core.WxMpConfig;
+import com.mario6.weixin.gateway.core.WxGatewayConfig;
 import com.mario6.weixin.gateway.core.WxPortalHandler;
 import com.mario6.weixin.gateway.core.WxRouter;
 import com.mario6.weixin.gateway.core.WxRouterRegister;
@@ -32,7 +32,7 @@ public class WxGatewayAutoConfiguration {
 
     @Bean
     public WxPortalHandler wxPortalHandler(WxRouter wxRouter) {
-        WxMpConfig wxConfig = getWxMpConfig();
+        WxGatewayConfig wxConfig = getWxMpConfig();
         WxPortalHandler portalHandler = new WxPortalHandler(wxConfig, wxRouter);
         return portalHandler;
     }
@@ -45,9 +45,10 @@ public class WxGatewayAutoConfiguration {
         return controller;
     }
 
-    private WxMpConfig getWxMpConfig() {
+    private WxGatewayConfig getWxMpConfig() {
         WxGatewayProperties.AppConfig app = properties.getApp();
-        WxMpConfig wxConfig = WxMpConfig.builder()
+        WxGatewayConfig wxConfig = WxGatewayConfig.builder()
+                .dev(properties.isDev())
                 .appId(app.getAppId())
                 .token(app.getToken())
                 .aesKey(app.getAesKey())

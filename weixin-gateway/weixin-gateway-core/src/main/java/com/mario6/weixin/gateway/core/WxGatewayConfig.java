@@ -13,7 +13,12 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class WxMpConfig implements Serializable {
+public class WxGatewayConfig implements Serializable {
+
+    /**
+     * 调试模式下: 不会进行消息准确性校验
+     */
+    private boolean dev = false;
 
     /**
      * 微信公众号appId

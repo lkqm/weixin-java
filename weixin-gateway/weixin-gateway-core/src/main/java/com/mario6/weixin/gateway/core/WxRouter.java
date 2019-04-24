@@ -6,10 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 路由分发
@@ -24,7 +22,14 @@ public class WxRouter {
     private static int DEFAULT_THREAD_POOL_SIZE = 100;
 
     public WxRouter() {
-        this.executorService = Executors.newFixedThreadPool(DEFAULT_THREAD_POOL_SIZE);
+        this.executorService = Executors.newFixedThreadPool(DEFAULT_THREAD_POOL_SIZE, new ThreadFactory() {
+            private final AtomicInteger threadNumber = new AtomicInteger(1);
+
+            @Override
+            public Thread newThread(Runnable task) {
+                return new Thread(task, "pool-wx-router-" + threadNumber.getAndIncrement());
+            }
+        });
     }
 
     public void route(final String xml) {
@@ -77,7 +82,7 @@ public class WxRouter {
                 for (Future<?> future : futureTasks) {
                     try {
                         future.get();
-                        log.info("End session access: fromUserName={}", wxMessage.getFromUserName());
+                        log.debug("End session access: fromUserName={}", wxMessage.getFromUserName());
                     } catch (InterruptedException e) {
                         log.error("Error happened when wait task finish", e);
                         Thread.currentThread().interrupt();
