@@ -1,6 +1,6 @@
 package com.mario6.dubbo.weixin.shorturl;
 
-import com.mario6.dubbo.weixin.wxmp.service.WxShortUrlService;
+import com.mario6.dubbo.weixin.mp.service.WxShortUrlService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
