@@ -1,7 +1,7 @@
 package com.mario6.weixin.gateway.app.handler;
 
 
-import com.mario6.weixin.gateway.base.WxXmlMessage;
+import com.mario6.weixin.gateway.base.WxBaseEvent;
 import com.mario6.weixin.gateway.core.annotation.WxController;
 import com.mario6.weixin.gateway.core.annotation.WxEvent;
 
@@ -12,15 +12,15 @@ import com.mario6.weixin.gateway.core.annotation.WxEvent;
 public class KfSessionHandler {
 
     @WxEvent("kf_create_session")
-    public void kfCreateSession(WxXmlMessage message) {
+    public void kfCreateSession(WxBaseEvent message) {
     }
 
 
     @WxEvent("kf_close_session")
-    public void kfCloseSession(WxXmlMessage message) {
+    public void kfCloseSession(WxBaseEvent message) {
     }
 
     @WxEvent("kf_switch_session")
-    public void kfSwitchSession(WxXmlMessage message) {
+    public void kfSwitchSession(WxBaseEvent message) {
     }
 }

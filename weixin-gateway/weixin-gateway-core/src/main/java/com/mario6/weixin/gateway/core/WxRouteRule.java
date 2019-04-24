@@ -1,7 +1,7 @@
 package com.mario6.weixin.gateway.core;
 
 
-import com.mario6.weixin.gateway.base.WxXmlMessage;
+import com.mario6.weixin.gateway.base.WxRouteMessage;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
@@ -50,7 +50,7 @@ public class WxRouteRule {
     /**
      * 测试是否规则匹配
      */
-    public boolean test(WxXmlMessage wxMessage) {
+    public boolean test(WxRouteMessage wxMessage) {
         String wxMsgType = wxMessage.getMsgType();
         String wxEvent = wxMessage.getEvent();
 

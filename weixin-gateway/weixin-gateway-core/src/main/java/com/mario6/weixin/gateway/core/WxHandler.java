@@ -1,7 +1,7 @@
 package com.mario6.weixin.gateway.core;
 
 
-import com.mario6.weixin.gateway.base.WxXmlMessage;
+import com.mario6.weixin.gateway.base.WxRouteMessage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -30,7 +30,7 @@ public class WxHandler {
         method.setAccessible(true);
     }
 
-    public void handle(WxXmlMessage message) {
+    public void handle(WxRouteMessage message) {
         Object[] args = resolveMethodArguments(message);
         try {
             method.invoke(invoker, args);
@@ -41,7 +41,7 @@ public class WxHandler {
         }
     }
 
-    private Object[] resolveMethodArguments(WxXmlMessage message) {
+    private Object[] resolveMethodArguments(WxRouteMessage message) {
         WxHandlerArguments resolver = new WxHandlerArguments(method, message);
         return resolver.resolveArguments();
     }

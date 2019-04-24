@@ -35,8 +35,7 @@ public class WxPortalHandler {
      * 消息处理方法
      */
     public String post(String requestBody, String signature, String timestamp, String nonce, String openid, String encType, String msgSignature) {
-        log.info("接收微信请求：[openid=[{}], [signature=[{}], encType=[{}], msgSignature=[{}],"
-                        + " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ",
+        log.debug("接收微信请求：[openid=[{}], [signature=[{}], encType=[{}], msgSignature=[{}], timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ",
                 openid, signature, encType, msgSignature, timestamp, nonce, requestBody);
         boolean dev = config.isDev();
         String token = config.getToken();
