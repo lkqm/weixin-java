@@ -1,4 +1,4 @@
-package com.mario6.weixin.gateway.starter;
+package com.mario6.springboot.weixin.gateway;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ReflectionUtils;

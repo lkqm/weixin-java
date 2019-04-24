@@ -1,5 +1,6 @@
 package com.mario6.dubbo.weixin.common.util;
 
+import com.github.binarywang.wxpay.exception.WxPayException;
 import me.chanjar.weixin.common.error.WxErrorException;
 
 /**
@@ -12,6 +13,8 @@ public class WxHandlerUtils {
             return handler.handle();
         } catch (WxErrorException e) {
             throw WxErrorUtils.newWxException(e);
+        } catch (WxPayException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -20,6 +23,8 @@ public class WxHandlerUtils {
             handler.handle();
         } catch (WxErrorException e) {
             throw WxErrorUtils.newWxException(e);
+        } catch (WxPayException e) {
+            throw new RuntimeException(e);
         }
     }
 

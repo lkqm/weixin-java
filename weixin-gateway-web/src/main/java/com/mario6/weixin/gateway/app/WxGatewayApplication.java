@@ -1,4 +1,4 @@
-package com.mario6.weixin.gateway.core;
+package com.mario6.weixin.gateway.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

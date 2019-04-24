@@ -1,4 +1,4 @@
-package com.mario6.weixin.gateway.core.handler;
+package com.mario6.weixin.gateway.app.handler;
 
 
 import com.mario6.weixin.gateway.core.annotation.WxController;

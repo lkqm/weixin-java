@@ -1,4 +1,4 @@
-package com.mario6.weixin.gateway.starter;
+package com.mario6.springboot.weixin.gateway;
 
 import com.mario6.weixin.gateway.core.WxGatewayConfig;
 import com.mario6.weixin.gateway.core.WxPortalHandler;
