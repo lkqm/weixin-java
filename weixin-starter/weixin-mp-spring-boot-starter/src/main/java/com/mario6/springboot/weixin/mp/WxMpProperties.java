@@ -18,37 +18,30 @@ public class WxMpProperties {
     public static final String PREFIX = "wx.mp";
 
     /**
-     * 应用配置
+     * 设置微信公众号的appid
      */
-    private App app = new App();
+    private String appId;
+
+    /**
+     * 设置微信公众号的app secret
+     */
+    private String secret;
+
+    /**
+     * 设置微信公众号的token
+     */
+    private String token;
+
+    /**
+     * 设置微信公众号的EncodingAESKey
+     */
+    private String aesKey;
 
     /**
      * 存储策略, memory, redis
      */
     private Storage storage = new Storage();
 
-    @Data
-    public static class App implements Serializable {
-        /**
-         * 设置微信公众号的appid
-         */
-        private String appId;
-
-        /**
-         * 设置微信公众号的app secret
-         */
-        private String secret;
-
-        /**
-         * 设置微信公众号的token
-         */
-        private String token;
-
-        /**
-         * 设置微信公众号的EncodingAESKey
-         */
-        private String aesKey;
-    }
 
     @Data
     public static class Storage implements Serializable {
@@ -59,10 +52,7 @@ public class WxMpProperties {
 
     }
 
-    /**
-     * 存储策略
-     */
-    public static enum StorageType {
+    public enum StorageType {
         memory, redis
     }
 }

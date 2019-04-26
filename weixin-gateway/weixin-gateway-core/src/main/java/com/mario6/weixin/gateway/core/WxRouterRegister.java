@@ -2,14 +2,13 @@ package com.mario6.weixin.gateway.core;
 
 import com.mario6.weixin.gateway.core.annotation.WxEvent;
 import com.mario6.weixin.gateway.core.annotation.WxMessage;
+import com.mario6.weixin.gateway.core.exception.WxRouterRegistryException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 路由注册
@@ -18,6 +17,9 @@ import java.util.List;
 public class WxRouterRegister {
 
     private WxRouter router;
+
+    private Map<String, Method> registeredMessages = new CaseInsensitiveMap();
+    private Map<String, Method> registeredEvents = new CaseInsensitiveMap();
 
     private WxRouterRegister(WxRouter router) {
         this.router = router;
@@ -34,11 +36,11 @@ public class WxRouterRegister {
             Object invoker = it.next();
             Class<?> clazz = invoker.getClass();
             if (clazz.isInterface()) continue;
-            registryForInvoker(invoker);
+            registryInvoker(invoker);
         }
     }
 
-    private void registryForInvoker(Object invoker) {
+    private void registryInvoker(Object invoker) {
         Class<?> clazz = invoker.getClass();
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
@@ -49,33 +51,46 @@ public class WxRouterRegister {
             // 重复注解@WxEvent, @WxMessage
             if (wxEvent != null && wxMessage != null) {
                 String methodName = getFullMethodName(method);
-                throw new RuntimeException("微信路由注册失败, 不能同时注解@WxEvent和@WxMessage: " + methodName);
+                throw new WxRouterRegistryException("微信路由注册失败, 处理方法不能同时注解@WxEvent和@WxMessage: " + methodName);
             }
 
             if (wxEvent != null) {
-                doRegistryEvent(invoker, method, wxEvent);
+                registryEvent(invoker, method, wxEvent);
             } else {
-                doRegistryMessage(invoker, method, wxMessage);
+                registryMessage(invoker, method, wxMessage);
             }
         }
     }
 
-
-    private void doRegistryEvent(Object invoker, Method method, WxEvent wxEvent) {
-        WxHandler handler = WxHandler.create(invoker, method);
-        String event = wxEvent.value();
-        router.rule().msgType("event").event(event).handler(handler).next();
-
+    private void registryEvent(Object invoker, Method method, WxEvent wxEvent) {
         String methodName = getFullMethodName(method);
+        String event = wxEvent.value();
+        Method eventMethod = registeredEvents.get(event);
+        if (eventMethod != null) {
+            throw new WxRouterRegistryException("微信路由注册失败, 重复的事件处理方法: " + methodName + " ," + getFullMethodName(eventMethod) + " ");
+        }
+
+        WxHandler handler = WxHandler.create(invoker, method);
+        router.rule().msgType("event").event(event).handler(handler).next();
+        registeredEvents.put(event, method);
         log.info("微信路由注册[event={}]: {}", event, methodName);
     }
 
-    private void doRegistryMessage(Object invoker, Method method, WxMessage wxMessage) {
-        WxHandler handler = WxHandler.create(invoker, method);
-        String msgType = wxMessage.msgType();
-        router.rule().msgType(msgType).handler(handler).next();
-
+    private void registryMessage(Object invoker, Method method, WxMessage wxMessage) {
+        String msgType = wxMessage.value();
         String methodName = getFullMethodName(method);
+        if ("event".equalsIgnoreCase(msgType)) {
+            throw new WxRouterRegistryException("微信路由注册失败，@WxMessage的value不能是event: " + methodName);
+        }
+
+        Method orgMessageMethod = registeredMessages.get(msgType);
+        if (orgMessageMethod != null) {
+            throw new WxRouterRegistryException("微信路由注册失败, 重复的消息处理方法: " + methodName + " ," + getFullMethodName(orgMessageMethod) + " ");
+        }
+
+        WxHandler handler = WxHandler.create(invoker, method);
+        router.rule().msgType(msgType).handler(handler).next();
+        registeredMessages.put(msgType, method);
         log.info("微信路由注册[msgType={}]: {}", msgType, methodName);
     }
 

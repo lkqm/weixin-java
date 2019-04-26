@@ -23,7 +23,6 @@ public class WxHandlerArguments {
     private Method method;
     private WxRouteMessage message;
 
-
     public Object[] resolveArguments() {
         Class<?>[] parameterTypes = method.getParameterTypes();
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();

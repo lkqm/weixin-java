@@ -3,16 +3,12 @@ package com.mario6.springboot.weixin.gateway;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.io.Serializable;
-
 /**
  * 微信配置
  */
-@ConfigurationProperties(prefix = WxGatewayProperties.PREFIX)
+@ConfigurationProperties(prefix = "wx.gateway")
 @Data
 public class WxGatewayProperties {
-
-    public static final String PREFIX = "wx.mp";
 
     /**
      * 开发模式, 不会微信校验消息的准确性
@@ -20,30 +16,23 @@ public class WxGatewayProperties {
     private boolean dev = false;
 
     /**
-     * 微信回掉地址URI
+     * 公众号回掉地址uri
      */
     private String uri = "/wx/mp/api";
 
+    /**
+     * 微信公众号appId
+     */
+    private String appId;
 
-    private AppConfig app = new AppConfig();
+    /**
+     * 微信公众号token
+     */
+    private String token;
 
-    @Data
-    public static class AppConfig implements Serializable {
-
-        /**
-         * 微信公众号appId
-         */
-        private String appId;
-
-        /**
-         * 微信公众号token
-         */
-        private String token;
-
-        /**
-         * 微信公众号aesKey
-         */
-        private String aesKey;
-    }
+    /**
+     * 微信公众号aesKey
+     */
+    private String aesKey;
 
 }

@@ -13,13 +13,8 @@ import java.lang.annotation.Target;
 public @interface WxMessage {
 
     /**
-     * 等价: msgType
+     * 消息类型
      */
     String value() default "";
-
-    /**
-     * 消息名称
-     */
-    String msgType() default "";
 
 }

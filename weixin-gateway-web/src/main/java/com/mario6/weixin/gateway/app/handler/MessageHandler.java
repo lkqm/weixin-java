@@ -10,31 +10,31 @@ import com.mario6.weixin.gateway.core.annotation.WxMessage;
 @WxController
 public class MessageHandler {
 
-    @WxMessage(msgType = "text")
+    @WxMessage("text")
     public void text(TextMessage textMessage) {
     }
 
-    @WxMessage(msgType = "image")
+    @WxMessage("image")
     public void image(ImageMessage imageMessage) {
     }
 
-    @WxMessage(msgType = "voice")
+    @WxMessage("voice")
     public void voice(VoiceMessage voiceMessage) {
     }
 
-    @WxMessage(msgType = "video")
+    @WxMessage("video")
     public void video(VideoMessage videoMessage) {
     }
 
-    @WxMessage(msgType = "shortvideo")
+    @WxMessage("shortvideo")
     public void shortVideo(VideoMessage videoMessage) {
     }
 
-    @WxMessage(msgType = "link")
+    @WxMessage("link")
     public void link(LinkMessage linkMessage) {
     }
 
-    @WxMessage(msgType = "location")
+    @WxMessage("location")
     public void location(LocationMessage locationMessage) {
     }
 }

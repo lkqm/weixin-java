@@ -46,9 +46,9 @@ public class WxGatewayAutoConfiguration {
     }
 
     private WxGatewayConfig getWxMpConfig() {
-        WxGatewayProperties.AppConfig app = properties.getApp();
+        WxGatewayProperties app = properties;
         WxGatewayConfig wxConfig = WxGatewayConfig.builder()
-                .dev(properties.isDev())
+                .dev(app.isDev())
                 .appId(app.getAppId())
                 .token(app.getToken())
                 .aesKey(app.getAesKey())
