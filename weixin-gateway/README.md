@@ -13,11 +13,13 @@
 
 支持: JDK1.7 +
 
+脚手架项目: [weixin-gateway-web](https://github.com/lkqm/weixin-java/tree/master/weixin-gateway/weixin-gateway-web)
+
 ## 快速开始(spring-boot项目)
 1. 引入依赖
     ```xml
     <dependency>
-        <groupId>com.mario6.weixin</groupId>
+        <groupId>com.github.lkqm</groupId>
         <artifactId>weixin-gateway-spring-boot-starter</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </dependency>
