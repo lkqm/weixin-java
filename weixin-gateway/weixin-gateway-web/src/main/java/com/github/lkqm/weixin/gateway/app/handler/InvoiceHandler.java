@@ -17,7 +17,6 @@ public class InvoiceHandler {
      */
     @WxEvent("user_authorize_invoice")
     public void authorEvent(InvoiceAuthEventMessage message) {
-        System.out.println("电子发票授权事件");
     }
 
     /**
@@ -25,7 +24,6 @@ public class InvoiceHandler {
      */
     @WxEvent("cloud_invoice_invoiceresult_event")
     public void invoiceResultEvent(InvoiceResultEventMessage message) {
-        System.out.println("电子发票开票结果");
     }
 
 }

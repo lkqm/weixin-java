@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.lkqm</groupId>
-    <artifactId>weixin-gateway-parent</artifactId>
+    <artifactId>weixin-gateway</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
 
@@ -13,7 +13,20 @@
         <module>weixin-gateway-base</module>
         <module>weixin-gateway-core</module>
         <module>weixin-gateway-spring-boot-starter</module>
+        <module>weixin-gateway-web</module>
     </modules>
 
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <name>Nexus Releases Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>Nexus Snapshots Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
