@@ -17,7 +17,7 @@ import redis.clients.jedis.JedisPoolConfig;
 public class WxMpStorageAutoConfiguration {
 
     @Autowired
-    private WxMpProperties wxMpProperties;
+    private WxMpProperties properties;
 
     @Autowired(required = false)
     private JedisPool jedisPool;
@@ -25,27 +25,22 @@ public class WxMpStorageAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(WxMpConfigStorage.class)
     public WxMpConfigStorage wxMpInMemoryConfigStorage() {
-        WxMpProperties.ConfigStorage storage = wxMpProperties.getConfigStorage();
+        WxMpProperties.ConfigStorage storage = properties.getConfigStorage();
         WxMpProperties.StorageType type = storage.getType();
 
-        WxMpInMemoryConfigStorage config = new WxMpInMemoryConfigStorage();
         if (type == WxMpProperties.StorageType.redis) {
-            config = getRedisConfigStorage();
+            return getWxMpInRedisConfigStorage();
         }
+        return getWxMpInMemoryConfigStorage();
+    }
 
+    private WxMpInMemoryConfigStorage getWxMpInMemoryConfigStorage() {
+        WxMpInMemoryConfigStorage config = new WxMpInMemoryConfigStorage();
         setWxMpInfo(config);
         return config;
     }
 
-    private void setWxMpInfo(WxMpInMemoryConfigStorage config) {
-        WxMpProperties app = wxMpProperties;
-        config.setAppId(app.getAppId());
-        config.setSecret(app.getSecret());
-        config.setToken(app.getToken());
-        config.setAesKey(app.getAesKey());
-    }
-
-    private WxMpInRedisConfigStorage getRedisConfigStorage() {
+    private WxMpInRedisConfigStorage getWxMpInRedisConfigStorage() {
         JedisPool poolToUse = jedisPool;
         if (poolToUse == null) {
             poolToUse = getJedisPool();
@@ -55,8 +50,15 @@ public class WxMpStorageAutoConfiguration {
         return config;
     }
 
+    private void setWxMpInfo(WxMpInMemoryConfigStorage config) {
+        config.setAppId(properties.getAppId());
+        config.setSecret(properties.getSecret());
+        config.setToken(properties.getToken());
+        config.setAesKey(properties.getAesKey());
+    }
+
     private JedisPool getJedisPool() {
-        WxMpProperties.ConfigStorage storage = wxMpProperties.getConfigStorage();
+        WxMpProperties.ConfigStorage storage = properties.getConfigStorage();
         RedisProperties redis = storage.getRedis();
 
         JedisPoolConfig config = new JedisPoolConfig();

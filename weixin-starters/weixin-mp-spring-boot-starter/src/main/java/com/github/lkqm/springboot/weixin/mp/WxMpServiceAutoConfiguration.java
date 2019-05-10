@@ -5,6 +5,8 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,7 @@ public class WxMpServiceAutoConfiguration {
     private ApplicationContext ctx;
 
     @Bean
+    @ConditionalOnMissingBean
     public WxMpService wxMpService(WxMpConfigStorage configStorage) {
         WxMpService wxMpService = new WxMpServiceImpl();
         wxMpService.setWxMpConfigStorage(configStorage);
@@ -25,7 +28,8 @@ public class WxMpServiceAutoConfiguration {
         return wxMpService;
     }
 
-    private void registerWxMpSubService(WxMpService wxMpService) {
+    @ConditionalOnBean(WxMpService.class)
+    public Object registerWxMpSubService(WxMpService wxMpService) {
         ConfigurableListableBeanFactory factory = (ConfigurableListableBeanFactory) ctx.getAutowireCapableBeanFactory();
         factory.registerSingleton("wxMpKefuService", wxMpService.getKefuService());
         factory.registerSingleton("wxMpMaterialService", wxMpService.getMaterialService());
@@ -43,6 +47,7 @@ public class WxMpServiceAutoConfiguration {
         factory.registerSingleton("wxMpShakeService", wxMpService.getShakeService());
         factory.registerSingleton("wxMpMemberCardService", wxMpService.getMemberCardService());
         factory.registerSingleton("wxMpMassMessageService", wxMpService.getMassMessageService());
+        return Boolean.TRUE;
     }
 
 }
