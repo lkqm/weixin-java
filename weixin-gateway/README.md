@@ -37,7 +37,7 @@
     @WxController
     public class InvoiceHandler {
         @WxEvent("user_authorize_invoice")
-        public void authEvent(nvoiceAuthMessage authMessage, @WxBody String xml, 
+        public void authEvent(InvoiceAuthMessage authMessage, @WxBody String xml, 
                               @WxParam("FromUserName") String fromUser, @WxParam("CreateTime") Integer createTime) {
         }
     }
@@ -53,11 +53,11 @@
 ### 参数注入
 处理微信消息(事件)的处理方法, 参数支持注入3种参数:
 
-- 普通bean: 普通JavaBean, 字段命名需要按照驼峰命名
-- @WxParam: 方法参数指定注解`@Wxparam`, 会自定注入指定xml标记的值(不支持多层潜逃)
+- 普通bean: 普通JavaBean, 字段命名需要按照驼峰命名(内部是xml转json, 然后json转对象)
+- @WxParam: 方法参数指定注解`@WxParam`, 会自定注入指定xml标记的值(不支持多层潜逃)
 - @WxBody: 方法参数指定注解`@WxBody`, 并且类型String, 会自动注入值为微信请求的xml(非密文)
 
-重要: 基本类型参数只会注入默认值
+注意: 基本类型参数只会注入默认值
 
 
 

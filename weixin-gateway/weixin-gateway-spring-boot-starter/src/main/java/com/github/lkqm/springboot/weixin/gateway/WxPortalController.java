@@ -26,7 +26,7 @@ public class WxPortalController {
     /**
      * 消息处理方法
      */
-    @PostMapping(produces = "application/xml; charset=UTF-8")
+    @PostMapping(produces = "application/xml; charset=utf-8")
     @ResponseBody
     public String post(@RequestBody String requestBody,
                        @RequestParam("signature") String signature,

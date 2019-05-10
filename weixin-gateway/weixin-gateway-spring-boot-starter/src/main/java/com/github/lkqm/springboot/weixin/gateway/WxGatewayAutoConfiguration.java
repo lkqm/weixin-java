@@ -7,6 +7,7 @@ import com.github.lkqm.weixin.gateway.core.WxRouterRegister;
 import com.github.lkqm.weixin.gateway.core.annotation.WxController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -19,11 +20,12 @@ import org.springframework.context.annotation.Configuration;
 public class WxGatewayAutoConfiguration {
 
     @Autowired
-    private WxGatewayProperties properties;
-    @Autowired
     private ApplicationContext ctx;
+    @Autowired
+    private WxGatewayProperties properties;
 
     @Bean
+    @ConditionalOnMissingBean
     public WxRouter wxMessageRouter() {
         WxRouter router = new WxRouter();
         WxRouterRegister.create(router).registry(ctx.getBeansWithAnnotation(WxController.class).values());
@@ -46,13 +48,11 @@ public class WxGatewayAutoConfiguration {
     }
 
     private WxGatewayConfig getWxMpConfig() {
-        WxGatewayProperties app = properties;
-        WxGatewayConfig wxConfig = WxGatewayConfig.builder()
-                .dev(app.isDev())
-                .appId(app.getAppId())
-                .token(app.getToken())
-                .aesKey(app.getAesKey())
+        return WxGatewayConfig.builder()
+                .dev(properties.isDev())
+                .appId(properties.getAppId())
+                .token(properties.getToken())
+                .aesKey(properties.getAesKey())
                 .build();
-        return wxConfig;
     }
 }
