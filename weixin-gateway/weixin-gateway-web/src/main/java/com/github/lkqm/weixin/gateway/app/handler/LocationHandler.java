@@ -11,6 +11,9 @@ import com.github.lkqm.weixin.gateway.core.annotation.WxEvent;
 @WxController
 public class LocationHandler {
 
+    /**
+     * 定位信息上报事件
+     */
     @WxEvent("location")
     public void location(LocationEventMessage message) {
     }

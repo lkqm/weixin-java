@@ -1,7 +1,7 @@
 package com.github.lkqm.weixin.gateway.app.handler;
 
 
-import com.github.lkqm.weixin.gateway.base.WxBaseMessage;
+import com.github.lkqm.weixin.gateway.base.WxBaseEvent;
 import com.github.lkqm.weixin.gateway.base.event.ScanEventMessage;
 import com.github.lkqm.weixin.gateway.core.annotation.WxController;
 import com.github.lkqm.weixin.gateway.core.annotation.WxEvent;
@@ -13,7 +13,7 @@ import com.github.lkqm.weixin.gateway.core.annotation.WxEvent;
 public class SubscribeHandler {
 
     /**
-     * 订阅, 包括扫码收关注
+     * 订阅, 包括扫码后关注
      */
     @WxEvent("subscribe")
     public void subscribe(ScanEventMessage message) {
@@ -23,13 +23,11 @@ public class SubscribeHandler {
      * 取消订阅
      */
     @WxEvent("unsubscribe")
-    public void unsubscribe(WxBaseMessage message) {
+    public void unsubscribe(WxBaseEvent message) {
     }
 
     /**
      * 扫码已经关注的情况
-     *
-     * @param message
      */
     @WxEvent("SCAN")
     public void scan(ScanEventMessage message) {
