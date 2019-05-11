@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @date 2018.11.07 16:43
  */
 @Data
-public class ClearOutInvoiceParams implements Serializable {
+public class ClearOutInvoiceRequest implements Serializable {
 
 
     private ClearOutInvoiceInfo invoiceinfo;

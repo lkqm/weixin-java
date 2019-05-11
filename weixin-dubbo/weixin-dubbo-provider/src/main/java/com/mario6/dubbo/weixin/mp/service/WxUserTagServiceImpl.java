@@ -37,7 +37,7 @@ public class WxUserTagServiceImpl implements WxUserTagService {
     }
 
     @Override
-    public WxTagListUser getUserByTagAndPage(Long id, String nextOpenid) {
+    public WxTagListUser getUsersByTagAndPage(Long id, String nextOpenid) {
         return handle(() -> wxMpUserTagService.tagListUser(id, nextOpenid));
     }
 

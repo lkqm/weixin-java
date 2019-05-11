@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 获取授权地址的输入参数
  */
 @Data
-public class InvoiceAuthPageParams implements Serializable {
+public class InvoiceAuthPageRequest implements Serializable {
 
     /**
      * 开票平台在微信的标识号，商户需要找开票平台提供

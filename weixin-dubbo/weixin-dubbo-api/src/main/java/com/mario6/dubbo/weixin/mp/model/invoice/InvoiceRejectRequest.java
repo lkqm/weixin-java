@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 拒绝开票参数DTO
  */
-public class InvoiceRejectParams implements Serializable {
+public class InvoiceRejectRequest implements Serializable {
 
     /**
      * 开票平台标示

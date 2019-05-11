@@ -15,13 +15,13 @@ public class WxQrcodeServiceImpl implements WxQrcodeService {
 
 
     @Override
-    public WxMpQrCodeTicket createTempQrcode(String data, Integer expireSeconds) {
-        return handle(() -> wxMpQrcodeService.qrCodeCreateTmpTicket(data, expireSeconds));
+    public WxMpQrCodeTicket createTempQrcode(String sceneStr, Integer expireSeconds) {
+        return handle(() -> wxMpQrcodeService.qrCodeCreateTmpTicket(sceneStr, expireSeconds));
     }
 
     @Override
-    public WxMpQrCodeTicket createPermQrcode(String data) {
-        return handle(() -> wxMpQrcodeService.qrCodeCreateLastTicket(data));
+    public WxMpQrCodeTicket createPermQrcode(String sceneStr) {
+        return handle(() -> wxMpQrcodeService.qrCodeCreateLastTicket(sceneStr));
     }
 
     @Override

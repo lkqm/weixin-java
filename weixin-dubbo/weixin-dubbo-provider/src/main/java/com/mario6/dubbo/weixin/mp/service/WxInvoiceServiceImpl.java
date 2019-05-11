@@ -24,7 +24,7 @@ public class WxInvoiceServiceImpl implements WxInvoiceService {
     private static final String INVOICE_URL = WX_URL + "/card/invoice";
 
     @Override
-    public InvoiceAuthPageResult getAuthPageUrl(InvoiceAuthPageParams params) {
+    public InvoiceAuthPageResult getAuthPageUrl(InvoiceAuthPageRequest params) {
         String url = getWxInvoiceFullUrl("/getauthurl");
         String ticket = handle(() -> wxMpService.getTicket(TicketType.WX_CARD));
         params.setTicket(ticket);
@@ -32,25 +32,25 @@ public class WxInvoiceServiceImpl implements WxInvoiceService {
     }
 
     @Override
-    public InvoiceAuthDataResult getAuthData(InvoiceAuthDataParams params) {
+    public InvoiceAuthDataResult getAuthData(InvoiceAuthDataRequest params) {
         String url = getWxInvoiceFullUrl("/getauthdata");
         return doCommonInvoiceHttpPost(url, params, InvoiceAuthDataResult.class);
     }
 
     @Override
-    public void rejectInvoice(InvoiceRejectParams params) {
+    public void rejectInvoice(InvoiceRejectRequest params) {
         String url = getWxInvoiceFullUrl("/rejectinsert");
         doCommonInvoiceHttpPost(url, params, null);
     }
 
     @Override
-    public void makeOutInvoice(MakeOutInvoiceParams params) {
+    public void makeOutInvoice(MakeOutInvoiceRequest params) {
         String url = getWxInvoiceFullUrl("/makeoutinvoice");
         doCommonInvoiceHttpPost(url, params, null);
     }
 
     @Override
-    public Object clearOutInvoice(ClearOutInvoiceParams params) {
+    public Object clearOutInvoice(ClearOutInvoiceRequest params) {
         String url = getWxInvoiceFullUrl("/clearoutinvoice");
         return doCommonInvoiceHttpPost(url, params, Object.class);
     }

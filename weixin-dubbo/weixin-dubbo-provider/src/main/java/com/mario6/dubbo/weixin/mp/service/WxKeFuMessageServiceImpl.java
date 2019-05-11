@@ -19,27 +19,27 @@ public class WxKeFuMessageServiceImpl implements WxKeFuMessageService {
 
 
     @Override
-    public boolean sendKefuMessage(WxMpKefuMessage message) {
+    public boolean sendKfMessage(WxMpKefuMessage message) {
         return handle(() -> wxMpKefuService.sendKefuMessage(message));
     }
 
     @Override
-    public WxMpKfList kfList() {
+    public WxMpKfList getKfAccountInfos() {
         return handle(() -> wxMpKefuService.kfList());
     }
 
     @Override
-    public WxMpKfOnlineList kfOnlineList() {
+    public WxMpKfOnlineList getOnlineKfAccountInfos() {
         return handle(() -> wxMpKefuService.kfOnlineList());
     }
 
     @Override
-    public boolean kfAccountAdd(WxMpKfAccountRequest request) {
+    public boolean addKfAccount(WxMpKfAccountRequest request) {
         return handle(() -> wxMpKefuService.kfAccountAdd(request));
     }
 
     @Override
-    public boolean kfAccountUpdate(WxMpKfAccountRequest request) {
+    public boolean updateKfAccount(WxMpKfAccountRequest request) {
         return handle(() -> wxMpKefuService.kfAccountUpdate(request));
     }
 
@@ -50,47 +50,47 @@ public class WxKeFuMessageServiceImpl implements WxKeFuMessageService {
     }
 
     @Override
-    public boolean kfAccountUploadHeadImg(String kfAccount, File imgFile) {
+    public boolean updateKfAccountAvater(String kfAccount, File imgFile) {
         return handle(() -> wxMpKefuService.kfAccountUploadHeadImg(kfAccount, imgFile));
     }
 
     @Override
-    public boolean kfAccountDel(String kfAccount) {
+    public boolean deleteKfAccount(String kfAccount) {
         return handle(() -> wxMpKefuService.kfAccountDel(kfAccount));
     }
 
     @Override
-    public boolean kfSessionCreate(String openid, String kfAccount) {
+    public boolean createKfSession(String openid, String kfAccount) {
         return handle(() -> wxMpKefuService.kfSessionCreate(openid, kfAccount));
     }
 
     @Override
-    public boolean kfSessionClose(String openid, String kfAccount) {
+    public boolean closeKfSession(String openid, String kfAccount) {
         return handle(() -> wxMpKefuService.kfSessionClose(openid, kfAccount));
     }
 
     @Override
-    public WxMpKfSessionGetResult kfSessionGet(String openid) {
+    public WxMpKfSessionGetResult getKfSessionByUser(String openid) {
         return handle(() -> wxMpKefuService.kfSessionGet(openid));
     }
 
     @Override
-    public WxMpKfSessionList kfSessionList(String kfAccount) {
+    public WxMpKfSessionList getKfSessionsByAccount(String kfAccount) {
         return handle(() -> wxMpKefuService.kfSessionList(kfAccount));
     }
 
     @Override
-    public WxMpKfSessionWaitCaseList kfSessionGetWaitCase() {
+    public WxMpKfSessionWaitCaseList getWaitKfSessions() {
         return handle(() -> wxMpKefuService.kfSessionGetWaitCase());
     }
 
     @Override
-    public WxMpKfMsgList kfMsgList(Date startTime, Date endTime, Long msgId, Integer number) {
+    public WxMpKfMsgList getKfMessages(Date startTime, Date endTime, Long msgId, Integer number) {
         return handle(() -> wxMpKefuService.kfMsgList(startTime, endTime, msgId, number));
     }
 
     @Override
-    public WxMpKfMsgList kfMsgList(Date startTime, Date endTime) {
+    public WxMpKfMsgList getKfMessages(Date startTime, Date endTime) {
         return handle(() -> wxMpKefuService.kfMsgList(startTime, endTime));
     }
 

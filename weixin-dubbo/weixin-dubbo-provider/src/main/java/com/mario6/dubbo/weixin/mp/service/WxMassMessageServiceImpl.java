@@ -16,32 +16,32 @@ public class WxMassMessageServiceImpl implements WxMassMessageService {
     private WxMpMassMessageService wxMpMassMessageService;
 
     @Override
-    public WxMpMassUploadResult massNewsUpload(WxMpMassNews news) {
+    public WxMpMassUploadResult uploadMassNews(WxMpMassNews news) {
         return handle(() -> wxMpMassMessageService.massNewsUpload(news));
     }
 
     @Override
-    public WxMpMassUploadResult massVideoUpload(WxMpMassVideo video) {
+    public WxMpMassUploadResult uploadMmassVideo(WxMpMassVideo video) {
         return handle(() -> wxMpMassMessageService.massVideoUpload(video));
     }
 
     @Override
-    public WxMpMassSendResult massGroupMessageSend(WxMpMassTagMessage message) {
+    public WxMpMassSendResult sendMassMessageByTag(WxMpMassTagMessage message) {
         return handle(() -> wxMpMassMessageService.massGroupMessageSend(message));
     }
 
     @Override
-    public WxMpMassSendResult massOpenIdsMessageSend(WxMpMassOpenIdsMessage message) {
+    public WxMpMassSendResult sendMassMessageByOpenIds(WxMpMassOpenIdsMessage message) {
         return handle(() -> wxMpMassMessageService.massOpenIdsMessageSend(message));
     }
 
     @Override
-    public WxMpMassSendResult massMessagePreview(WxMpMassPreviewMessage wxMpMassPreviewMessage) {
+    public WxMpMassSendResult previewMassMessage(WxMpMassPreviewMessage wxMpMassPreviewMessage) {
         return handle(() -> wxMpMassMessageService.massMessagePreview(wxMpMassPreviewMessage));
     }
 
     @Override
-    public void delete(Long msgId, Integer articleIndex) {
+    public void deleteMassMessage(Long msgId, Integer articleIndex) {
         handle(() -> wxMpMassMessageService.delete(msgId, articleIndex));
     }
 }

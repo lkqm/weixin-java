@@ -18,7 +18,7 @@ public class WxTemplateMessageServiceImpl implements WxTemplateMessageService {
     private WxMpTemplateMsgService wxMpTemplateMsgService;
 
     @Override
-    public String sendTemplateMsg(WxMpTemplateMessage templateMessage) {
+    public String sendTemplateMessage(WxMpTemplateMessage templateMessage) {
         return handle(() -> wxMpTemplateMsgService.sendTemplateMsg(templateMessage));
     }
 
@@ -28,7 +28,7 @@ public class WxTemplateMessageServiceImpl implements WxTemplateMessageService {
     }
 
     @Override
-    public boolean delPrivateTemplate(String templateId) {
+    public boolean deletePrivateTemplate(String templateId) {
         return handle(() -> wxMpTemplateMsgService.delPrivateTemplate(templateId));
     }
 

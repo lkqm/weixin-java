@@ -16,33 +16,28 @@ public class WxMenuServiceImpl implements WxMenuService {
     private WxMpMenuService wxMpMenuService;
 
     @Override
-    public String menuCreate(WxMenu menu) {
+    public String createMenu(WxMenu menu) {
         return handle(() -> wxMpMenuService.menuCreate(menu));
     }
 
     @Override
-    public String menuCreate(String json) {
-        return handle(() -> wxMpMenuService.menuCreate(json));
-    }
-
-    @Override
-    public void menuDelete() {
+    public void deleteMenu() {
         handle(() -> wxMpMenuService.menuDelete());
     }
 
     @Override
-    public void menuDelete(String menuId) {
+    public void deleteMenu(String menuId) {
         handle(() -> wxMpMenuService.menuDelete(menuId));
     }
 
     @Override
-    public WxMpMenu menuGet() {
+    public WxMpMenu getMenu() {
         return handle(() -> wxMpMenuService.menuGet());
     }
 
     @Override
-    public WxMenu menuTryMatch(String userid) {
-        return handle(() -> wxMpMenuService.menuTryMatch(userid));
+    public WxMenu tryMatchMenu(String userId) {
+        return handle(() -> wxMpMenuService.menuTryMatch(userId));
     }
 
     @Override

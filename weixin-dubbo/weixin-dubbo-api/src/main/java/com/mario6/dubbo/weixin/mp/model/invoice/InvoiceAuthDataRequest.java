@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @date 2018.11.07 13:46
  */
 @Data
-public class InvoiceAuthDataParams implements Serializable {
+public class InvoiceAuthDataRequest implements Serializable {
 
     /**
      * 开票平台在微信的标识号，商户需要找开票平台提供

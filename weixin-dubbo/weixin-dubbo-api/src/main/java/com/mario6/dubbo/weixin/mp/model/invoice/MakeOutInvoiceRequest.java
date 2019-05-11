@@ -12,7 +12,7 @@ import java.util.List;
  * @date 2018.11.07 16:14
  */
 @Data
-public class MakeOutInvoiceParams implements Serializable {
+public class MakeOutInvoiceRequest implements Serializable {
 
     private InvoiceInfo invoiceinfo;
 

@@ -12,31 +12,31 @@ public interface WxMassMessageService {
     /**
      * 上传群发用的图文消息，上传后才能群发图文消息
      */
-    WxMpMassUploadResult massNewsUpload(WxMpMassNews news);
+    WxMpMassUploadResult uploadMassNews(WxMpMassNews news);
 
     /**
      * 上传群发用的视频，上传后才能群发视频消息
      */
-    WxMpMassUploadResult massVideoUpload(WxMpMassVideo video);
+    WxMpMassUploadResult uploadMmassVideo(WxMpMassVideo video);
 
     /**
      * 分组群发消息
      */
-    WxMpMassSendResult massGroupMessageSend(WxMpMassTagMessage message);
+    WxMpMassSendResult sendMassMessageByTag(WxMpMassTagMessage message);
 
     /**
      * 按openId列表群发消息
      */
-    WxMpMassSendResult massOpenIdsMessageSend(WxMpMassOpenIdsMessage message);
+    WxMpMassSendResult sendMassMessageByOpenIds(WxMpMassOpenIdsMessage message);
 
     /**
      * 群发消息预览接口
      */
-    WxMpMassSendResult massMessagePreview(WxMpMassPreviewMessage wxMpMassPreviewMessage);
+    WxMpMassSendResult previewMassMessage(WxMpMassPreviewMessage wxMpMassPreviewMessage);
 
     /**
      * 群发之后，随时可以通过该接口删除群发
      */
-    void delete(Long msgId, Integer articleIndex);
+    void deleteMassMessage(Long msgId, Integer articleIndex);
 
 }

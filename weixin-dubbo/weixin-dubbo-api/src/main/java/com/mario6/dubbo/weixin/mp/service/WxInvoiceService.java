@@ -4,21 +4,18 @@ import com.mario6.dubbo.weixin.mp.model.invoice.*;
 
 /**
  * 电子发票相关的接口
- *
- * @author Mario Luo
- * @date 2018.11.07 13:37
  */
 public interface WxInvoiceService {
 
     /**
      * 获取开票授权页链接
      */
-    InvoiceAuthPageResult getAuthPageUrl(InvoiceAuthPageParams params);
+    InvoiceAuthPageResult getAuthPageUrl(InvoiceAuthPageRequest params);
 
     /**
      * 获得用户授权数据
      */
-    InvoiceAuthDataResult getAuthData(InvoiceAuthDataParams params);
+    InvoiceAuthDataResult getAuthData(InvoiceAuthDataRequest params);
 
     /**
      * 拒绝开票
@@ -26,17 +23,17 @@ public interface WxInvoiceService {
      * 场景: 用户授权填写数据无效
      * 结果: 用户会收到一条开票失败提示
      */
-    void rejectInvoice(InvoiceRejectParams params);
+    void rejectInvoice(InvoiceRejectRequest params);
 
     /**
      * 开具电子发票
      */
-    void makeOutInvoice(MakeOutInvoiceParams params);
+    void makeOutInvoice(MakeOutInvoiceRequest params);
 
     /**
      * 发票冲红
      */
-    Object clearOutInvoice(ClearOutInvoiceParams params);
+    Object clearOutInvoice(ClearOutInvoiceRequest params);
 
     /**
      * 查询发票信息

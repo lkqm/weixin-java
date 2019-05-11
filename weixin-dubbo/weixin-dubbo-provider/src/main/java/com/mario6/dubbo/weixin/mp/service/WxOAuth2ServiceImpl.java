@@ -11,27 +11,27 @@ public class WxOAuth2ServiceImpl implements WxOAuth2Service {
     private WxMpService wxMpService;
 
     @Override
-    public String oauth2buildAuthorizationUrl(String redirectURI, String scope, String state) {
+    public String buildOauth2AuthorizationUrl(String redirectURI, String scope, String state) {
         return handle(() -> wxMpService.oauth2buildAuthorizationUrl(redirectURI, scope, state));
     }
 
     @Override
-    public WxMpOAuth2AccessToken oauth2getAccessToken(String code) {
+    public WxMpOAuth2AccessToken getOauth2AccessToken(String code) {
         return handle(() -> wxMpService.oauth2getAccessToken(code));
     }
 
     @Override
-    public WxMpOAuth2AccessToken oauth2refreshAccessToken(String refreshToken) {
+    public WxMpOAuth2AccessToken refreshOauth2AccessToken(String refreshToken) {
         return handle(() -> wxMpService.oauth2refreshAccessToken(refreshToken));
     }
 
     @Override
-    public WxMpUser oauth2getUserInfo(WxMpOAuth2AccessToken oAuth2AccessToken, String lang) {
+    public WxMpUser getOauth2UserInfo(WxMpOAuth2AccessToken oAuth2AccessToken, String lang) {
         return handle(() -> wxMpService.oauth2getUserInfo(oAuth2AccessToken, lang));
     }
 
     @Override
-    public boolean oauth2validateAccessToken(WxMpOAuth2AccessToken oAuth2AccessToken) {
+    public boolean validateOauth2AccessToken(WxMpOAuth2AccessToken oAuth2AccessToken) {
         return handle(() -> wxMpService.oauth2validateAccessToken(oAuth2AccessToken));
     }
 }

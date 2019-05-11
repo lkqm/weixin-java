@@ -6,6 +6,10 @@ import me.chanjar.weixin.mp.bean.material.*;
 import java.io.File;
 import java.io.InputStream;
 
+/**
+ * 媒体管理
+ * // TODO:
+ */
 public interface WxMediaService {
 
 

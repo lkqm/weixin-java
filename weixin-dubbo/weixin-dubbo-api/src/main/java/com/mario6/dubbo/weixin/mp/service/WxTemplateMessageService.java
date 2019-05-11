@@ -11,7 +11,7 @@ public interface WxTemplateMessageService {
     /**
      * 发送模版消息
      */
-    String sendTemplateMsg(WxMpTemplateMessage templateMessage);
+    String sendTemplateMessage(WxMpTemplateMessage templateMessage);
 
     /**
      * 添加一个消息模版
@@ -21,7 +21,7 @@ public interface WxTemplateMessageService {
     /**
      * 删除模版
      */
-    boolean delPrivateTemplate(String templateId);
+    boolean deletePrivateTemplate(String templateId);
 
     /**
      * 获得所有模版

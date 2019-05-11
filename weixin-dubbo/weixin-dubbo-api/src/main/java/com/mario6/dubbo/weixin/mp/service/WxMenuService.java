@@ -4,37 +4,35 @@ import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.mp.bean.menu.WxMpGetSelfMenuInfoResult;
 import me.chanjar.weixin.mp.bean.menu.WxMpMenu;
 
+/**
+ * 菜单管理
+ */
 public interface WxMenuService {
 
     /**
      * 创建菜单
      */
-    String menuCreate(WxMenu menu);
-
-    /**
-     * 创建菜单
-     */
-    String menuCreate(String json);
+    String createMenu(WxMenu menu);
 
     /**
      * 删除菜单
      */
-    void menuDelete();
+    void deleteMenu();
 
     /**
      * 删除菜单
      */
-    void menuDelete(String menuId);
+    void deleteMenu(String menuId);
 
     /**
      * 获取菜单
      */
-    WxMpMenu menuGet();
+    WxMpMenu getMenu();
 
     /**
      * 获取匹配用户的菜单
      */
-    WxMenu menuTryMatch(String userid);
+    WxMenu tryMatchMenu(String userId);
 
     /**
      * 获取个人菜单信息
