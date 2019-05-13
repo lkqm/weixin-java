@@ -1,9 +1,6 @@
 package com.github.lkqm.weixin.gateway.core.util;
 
-import org.apache.commons.beanutils.BeanUtils;
-
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * ReflectionUtils
@@ -21,27 +18,6 @@ public class ReflectionUtils {
             }
         }
         return null;
-    }
-
-    public static <T> T newInstance(Class<T> clazz) {
-        try {
-            return clazz.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static void copyProperties(Object sources, Object target) {
-        try {
-            BeanUtils.copyProperties(target, sources);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
     }
 
     /**

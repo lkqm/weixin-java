@@ -1,6 +1,5 @@
 package com.github.lkqm.weixin.gateway.core;
 
-import com.github.lkqm.weixin.gateway.core.util.WxMessageUtils;
 import com.github.lkqm.weixin.gateway.core.util.WxUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +45,7 @@ public class WxPortalHandler {
         if ("AES".equalsIgnoreCase(encType)) {
             xml = WxUtils.decryptXml(config, requestBody);
         }
-        WxRouteMessage message = WxMessageUtils.createFromXml(xml);
+        WxRouteMessage message = WxRouteMessage.createFromXml(xml);
         router.route(message);
         return "";
     }

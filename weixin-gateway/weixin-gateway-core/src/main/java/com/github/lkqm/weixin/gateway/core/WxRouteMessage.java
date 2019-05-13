@@ -1,5 +1,7 @@
 package com.github.lkqm.weixin.gateway.core;
 
+import com.alibaba.fastjson.JSONObject;
+import com.github.lkqm.weixin.gateway.core.util.XmlConverter;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -57,4 +59,17 @@ public class WxRouteMessage implements Serializable {
      * 原始xml数据map
      */
     private transient Map<String, Object> xmlCamelMap;
+
+    public static WxRouteMessage createFromXml(String xml) {
+        Map<String, Object> mapData = XmlConverter.convertToOrgMap(xml);
+        Map<String, Object> camelMapData = XmlConverter.convertToCamelMap(xml);
+        String json = JSONObject.toJSONString(camelMapData);
+
+        WxRouteMessage message = JSONObject.parseObject(json, WxRouteMessage.class);
+        message.setXml(xml);
+        message.setCamelJson(json);
+        message.setXmlMap(mapData);
+        message.setXmlCamelMap(camelMapData);
+        return message;
+    }
 }

@@ -1,6 +1,5 @@
 package com.github.lkqm.weixin.gateway.core.util;
 
-import com.alibaba.fastjson.JSONObject;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -41,26 +40,10 @@ public class XmlConverter {
     }
 
     /**
-     * 转换为json
-     */
-    public static String convertToOrgJson(String xml) {
-        Map<String, Object> data = convertToOrgMap(xml);
-        return JSONObject.toJSONString(data);
-    }
-
-    /**
-     * 转换为json, 其中key按照驼峰命名发
-     */
-    public static String convertToCamelJson(String xml) {
-        Map<String, Object> data = convertToCamelMap(xml);
-        return JSONObject.toJSONString(data);
-    }
-
-    /**
      * 转换到map
      */
     @SneakyThrows
-    public Map<String, Object> convertToMap(String xml) {
+    private Map<String, Object> convertToMap(String xml) {
         SAXReader saxReader = new SAXReader();
         Document document = saxReader.read(new StringReader(xml));
         Element root = document.getRootElement();
@@ -86,6 +69,29 @@ public class XmlConverter {
 
     private String getKeyName(String tagName) {
         if (!keyCamelName) return tagName;
-        return StringUtilsExt.convertToCamelCase(tagName);
+        return convertToCamelCase(tagName);
+    }
+
+    private static String convertToCamelCase(String text) {
+        StringBuilder name = new StringBuilder();
+        char[] chars = text.toCharArray();
+        boolean isNeedUpper = false;
+        boolean isFirstChar = true;
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            if (c == '-' || c == '_' || c == '$' || c == '.') {
+                isNeedUpper = true;
+                continue;
+            }
+            if (isFirstChar) {
+                name.append(Character.toLowerCase(c));
+                isFirstChar = false;
+                isNeedUpper = false;
+                continue;
+            }
+            name.append(isNeedUpper ? Character.toUpperCase(c) : c);
+            isNeedUpper = false;
+        }
+        return name.toString();
     }
 }
