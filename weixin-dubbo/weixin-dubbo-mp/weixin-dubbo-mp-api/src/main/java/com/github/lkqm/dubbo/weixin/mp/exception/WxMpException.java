@@ -3,6 +3,9 @@ package com.github.lkqm.dubbo.weixin.mp.exception;
 public class WxMpException extends RuntimeException {
     private WxError error;
 
+    public WxMpException() {
+    }
+
     public WxMpException(WxError error) {
         super(error.toString());
         this.error = error;

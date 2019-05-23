@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * 客服消息管理
- * <p>
+ *
  * 包括: 客服账户, 客服会话， 客服消息
  */
 public interface WxKeFuMessageService {
