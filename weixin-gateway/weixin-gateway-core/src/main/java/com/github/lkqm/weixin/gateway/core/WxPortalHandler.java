@@ -21,7 +21,7 @@ public class WxPortalHandler {
      * 服务器认证方法
      */
     public String get(String signature, String timestamp, String nonce, String echostr) {
-        log.info("接收到来自微信服务器的认证消息：[{}, {}, {}, {}]", signature, timestamp, nonce, echostr);
+        log.info("接收到来自微信服务器的认证消息：[signature={}, timestamp={}, nonce={}, echostr={}]", signature, timestamp, nonce, echostr);
         String token = config.getToken();
         boolean pass = !StringUtils.isAnyBlank(signature, timestamp, nonce, echostr)
                 && WxUtils.checkSignature(token, timestamp, nonce, signature);
@@ -35,6 +35,7 @@ public class WxPortalHandler {
     public String post(String requestBody, String signature, String timestamp, String nonce, String openid, String encType, String msgSignature) {
         log.info("接收微信请求：[openid=[{}], [signature=[{}], encType=[{}], msgSignature=[{}], timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ",
                 openid, signature, encType, msgSignature, timestamp, nonce, requestBody);
+        log.debug("");
         boolean dev = config.isDev();
         String token = config.getToken();
         if (!dev && !WxUtils.checkSignature(token, timestamp, nonce, signature)) {

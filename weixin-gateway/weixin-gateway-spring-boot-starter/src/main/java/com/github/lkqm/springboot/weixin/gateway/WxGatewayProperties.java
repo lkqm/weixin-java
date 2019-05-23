@@ -18,7 +18,7 @@ public class WxGatewayProperties {
     /**
      * 公众号回掉地址uri
      */
-    private String uri = "/wx/mp/api";
+    private String uri = "/";
 
     /**
      * 微信公众号appId
