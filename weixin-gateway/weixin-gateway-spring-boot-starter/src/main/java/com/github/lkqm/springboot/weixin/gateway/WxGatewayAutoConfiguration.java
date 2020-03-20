@@ -1,6 +1,5 @@
 package com.github.lkqm.springboot.weixin.gateway;
 
-import com.github.lkqm.weixin.gateway.core.WxGatewayConfig;
 import com.github.lkqm.weixin.gateway.core.WxPortalHandler;
 import com.github.lkqm.weixin.gateway.core.WxRouter;
 import com.github.lkqm.weixin.gateway.core.WxRouterRegister;
@@ -28,14 +27,13 @@ public class WxGatewayAutoConfiguration {
     @ConditionalOnMissingBean
     public WxRouter wxMessageRouter() {
         WxRouter router = new WxRouter();
-        WxRouterRegister.create(router).registry(ctx.getBeansWithAnnotation(WxController.class).values());
+        WxRouterRegister.create(router).register(ctx.getBeansWithAnnotation(WxController.class).values());
         return router;
     }
 
     @Bean
     public WxPortalHandler wxPortalHandler(WxRouter wxRouter) {
-        WxGatewayConfig wxConfig = getWxMpConfig();
-        WxPortalHandler portalHandler = new WxPortalHandler(wxConfig, wxRouter);
+        WxPortalHandler portalHandler = new WxPortalHandler(wxRouter);
         return portalHandler;
     }
 
@@ -47,12 +45,4 @@ public class WxGatewayAutoConfiguration {
         return controller;
     }
 
-    private WxGatewayConfig getWxMpConfig() {
-        return WxGatewayConfig.builder()
-                .dev(properties.isDev())
-                .appId(properties.getAppId())
-                .token(properties.getToken())
-                .aesKey(properties.getAesKey())
-                .build();
-    }
 }

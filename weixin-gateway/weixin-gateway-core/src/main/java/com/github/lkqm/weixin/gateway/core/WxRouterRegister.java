@@ -2,13 +2,14 @@ package com.github.lkqm.weixin.gateway.core;
 
 import com.github.lkqm.weixin.gateway.core.annotation.WxEvent;
 import com.github.lkqm.weixin.gateway.core.annotation.WxMessage;
-import com.github.lkqm.weixin.gateway.core.exception.WxRouterRegistryException;
+import com.github.lkqm.weixin.gateway.core.util.ReflectionUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.map.CaseInsensitiveMap;
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * 路由注册
@@ -18,8 +19,8 @@ public class WxRouterRegister {
 
     private WxRouter router;
 
-    private Map<String, Method> registeredMessages = new CaseInsensitiveMap();
-    private Map<String, Method> registeredEvents = new CaseInsensitiveMap();
+    private Map<String, Method> registeredMessages = new HashMap<>();
+    private Map<String, Method> registeredEvents = new HashMap<>();
 
     private WxRouterRegister(WxRouter router) {
         this.router = router;
@@ -29,85 +30,74 @@ public class WxRouterRegister {
         return new WxRouterRegister(router);
     }
 
-    public void registry(Collection<Object> values) {
-        log.info("开始注册微信路由...");
-        Iterator<Object> it = values.iterator();
+    /**
+     * Register to wx router
+     */
+    public void register(Collection<Object> invokers) {
+        log.info("wx router register starting...");
+        Iterator<Object> it = invokers.iterator();
         while (it.hasNext()) {
             Object invoker = it.next();
-            Class<?> clazz = invoker.getClass();
-            if (clazz.isInterface()) continue;
-            registryInvoker(invoker);
+            if (invoker != null) {
+                registerInvoker(invoker);
+            }
         }
     }
 
-    private void registryInvoker(Object invoker) {
+    private void registerInvoker(Object invoker) {
         Class<?> clazz = invoker.getClass();
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
             WxEvent wxEvent = method.getAnnotation(WxEvent.class);
             WxMessage wxMessage = method.getAnnotation(WxMessage.class);
-            if (wxEvent == null && wxMessage == null) continue;
 
-            // 重复注解@WxEvent, @WxMessage
             if (wxEvent != null && wxMessage != null) {
-                String methodName = getFullMethodName(method);
-                throw new WxRouterRegistryException("微信路由注册失败, 处理方法不能同时注解@WxEvent和@WxMessage: " + methodName);
-            }
-
-            if (wxEvent != null) {
-                registryEvent(invoker, method, wxEvent);
-            } else {
-                registryMessage(invoker, method, wxMessage);
+                String methodName = ReflectionUtils.getMethodFullName(method);
+                throw new IllegalArgumentException("wx router register failed, duplicated annotation @WxEvent, @WxMessage: " + methodName);
+            } else if (wxEvent != null) {
+                registerEventHandler(invoker, method, wxEvent);
+            } else if (wxMessage != null) {
+                registryMessageHandler(invoker, method, wxMessage);
             }
         }
     }
 
-    private void registryEvent(Object invoker, Method method, WxEvent wxEvent) {
-        String methodName = getFullMethodName(method);
+    /**
+     * Register wx router handle method with @WxEvent
+     */
+    private void registerEventHandler(Object invoker, Method method, WxEvent wxEvent) {
+        String methodName = ReflectionUtils.getMethodFullName(method);
         String event = wxEvent.value();
         Method eventMethod = registeredEvents.get(event);
         if (eventMethod != null) {
-            throw new WxRouterRegistryException("微信路由注册失败, 重复的事件处理方法: " + methodName + " ," + getFullMethodName(eventMethod) + " ");
+            throw new IllegalArgumentException("wx router register failed, duplicated event: " + methodName + " ," + ReflectionUtils.getMethodFullName(eventMethod));
         }
 
         WxHandler handler = WxHandler.create(invoker, method);
         router.rule().msgType("event").event(event).handler(handler).next();
         registeredEvents.put(event, method);
-        log.info("微信路由注册[event={}]: {}", event, methodName);
+        log.info("wx router register event handler [event={}]: {}", event, methodName);
     }
 
-    private void registryMessage(Object invoker, Method method, WxMessage wxMessage) {
+    /**
+     * Register wx router handle method with @WxMessage
+     */
+    private void registryMessageHandler(Object invoker, Method method, WxMessage wxMessage) {
         String msgType = wxMessage.value();
-        String methodName = getFullMethodName(method);
-        if ("event".equalsIgnoreCase(msgType)) {
-            throw new WxRouterRegistryException("微信路由注册失败，@WxMessage的value不能是event: " + methodName);
+        String methodName = ReflectionUtils.getMethodFullName(method);
+        if ("event".equals(msgType)) {
+            throw new IllegalArgumentException("wx router register failed，@WxMessage value must not be 'event': " + methodName);
         }
 
         Method orgMessageMethod = registeredMessages.get(msgType);
         if (orgMessageMethod != null) {
-            throw new WxRouterRegistryException("微信路由注册失败, 重复的消息处理方法: " + methodName + " ," + getFullMethodName(orgMessageMethod) + " ");
+            throw new IllegalArgumentException("wx router register failed, duplicated message type: " + methodName + " ," + ReflectionUtils.getMethodFullName(orgMessageMethod));
         }
 
         WxHandler handler = WxHandler.create(invoker, method);
         router.rule().msgType(msgType).handler(handler).next();
         registeredMessages.put(msgType, method);
-        log.info("微信路由注册[msgType={}]: {}", msgType, methodName);
+        log.info("wx router register message handler [msgType={}]: {}", msgType, methodName);
     }
 
-    private String getFullMethodName(Method method) {
-        String className = method.getDeclaringClass().getCanonicalName();
-        String methodName = method.getName();
-        Class<?>[] types = method.getParameterTypes();
-        List<String> typeNames = new ArrayList<>(types.length);
-        for (Class type : types) {
-            typeNames.add(type.getSimpleName());
-        }
-        String fullMethodName = new StringBuilder()
-                .append(className)
-                .append(".").append(methodName)
-                .append("(").append(StringUtils.join(typeNames, ","))
-                .append(")")
-                .toString();
-        return fullMethodName;
-    }
 }

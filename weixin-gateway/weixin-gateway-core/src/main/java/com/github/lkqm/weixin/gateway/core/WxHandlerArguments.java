@@ -22,6 +22,9 @@ public class WxHandlerArguments {
     private Method method;
     private WxRouteMessage message;
 
+    /**
+     * Resolve handle method args
+     */
     public Object[] resolveArguments() {
         Class<?>[] parameterTypes = method.getParameterTypes();
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
@@ -29,19 +32,19 @@ public class WxHandlerArguments {
 
         for (int i = 0; i < parameterTypes.length; i++) {
             Class type = parameterTypes[i];
-            // 原生类型
+            // Primitive type
             if (type.isPrimitive()) {
                 results[i] = ReflectionUtils.getTypeDefaultValue(type);
                 continue;
             }
-            // 参数注解@WxBody && String
+            // @WxBody && String
             Annotation[] annotations = parameterAnnotations[i];
             WxBody wxBody = ReflectionUtils.getAnnotation(annotations, WxBody.class);
             if (wxBody != null && String.class == type) {
                 results[i] = message.getXml();
                 continue;
             }
-            // 参数注解@WxParam
+            // @WxParam
             WxParam wxParam = ReflectionUtils.getAnnotation(annotations, WxParam.class);
             if (wxParam != null) {
                 results[i] = getArgumentWithAnnotation(message, type, wxParam.value());

@@ -1,6 +1,7 @@
 package com.github.lkqm.weixin.gateway.core.util;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 /**
  * ReflectionUtils
@@ -46,5 +47,25 @@ public class ReflectionUtils {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 获取方法全名包括参数
+     */
+    public static String getMethodFullName(Method method) {
+        String className = method.getDeclaringClass().getCanonicalName();
+        String methodName = method.getName();
+        Class<?>[] types = method.getParameterTypes();
+        String[] typeNames = new String[types.length];
+        for (int i = 0; i < types.length; i++) {
+            typeNames[i] = types[i].getSimpleName();
+        }
+        String fullMethodName = new StringBuilder()
+                .append(className)
+                .append(".").append(methodName)
+                .append("(").append(Utils.join(typeNames, ","))
+                .append(")")
+                .toString();
+        return fullMethodName;
     }
 }

@@ -4,7 +4,6 @@ import com.github.lkqm.weixin.gateway.core.WxGatewayConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -60,7 +59,7 @@ public class WxUtils {
     private static String signature(String token, String timestamp, String nonce) {
         String[] elements = {token, timestamp, nonce};
         Arrays.sort(elements);
-        String text = StringUtils.join(elements, "");
+        String text = Utils.join(elements, "");
         return DigestUtils.sha1Hex(text);
     }
 

@@ -1,8 +1,8 @@
 package com.github.lkqm.weixin.gateway.core;
 
 
+import com.github.lkqm.weixin.gateway.core.util.Utils;
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * 路由规则匹配器
@@ -53,13 +53,13 @@ public class WxRouteRule {
         String wxMsgType = wxMessage.getMsgType();
         String wxEvent = wxMessage.getEvent();
 
-        if (!StringUtils.equalsIgnoreCase(wxMsgType, msgType)) {
+        if (!Utils.equalsIgnoreCase(wxMsgType, msgType)) {
             return false;
         }
 
 
-        if (StringUtils.equalsIgnoreCase(wxMsgType, "event")
-                && !StringUtils.equalsIgnoreCase(wxEvent, event)) {
+        if (Utils.equalsIgnoreCase(wxMsgType, "event")
+                && !Utils.equalsIgnoreCase(wxEvent, event)) {
             return false;
         }
 

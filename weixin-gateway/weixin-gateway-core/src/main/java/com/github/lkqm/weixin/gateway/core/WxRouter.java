@@ -62,7 +62,7 @@ public class WxRouter {
             Future<?> future = this.executorService.submit(new Runnable() {
                 @Override
                 public void run() {
-                    handler.handle(wxMessage);
+                    handler.execute(wxMessage);
                 }
             });
             futures.add(future);

@@ -1,5 +1,6 @@
 package com.github.lkqm.springboot.weixin.gateway;
 
+import com.github.lkqm.weixin.gateway.core.WxGatewayConfig;
 import com.github.lkqm.weixin.gateway.core.WxPortalHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class WxPortalController {
 
     private WxPortalHandler handler;
+    private WxGatewayProperties properties;
 
     /**
      * 服务器认证方法
@@ -20,7 +22,8 @@ public class WxPortalController {
     @GetMapping(produces = "text/plain;charset=utf-8")
     @ResponseBody
     public String get(String signature, String timestamp, String nonce, String echostr) {
-        return handler.get(signature, timestamp, nonce, echostr);
+        WxGatewayConfig config = getWxMpConfig();
+        return handler.get(config, signature, timestamp, nonce, echostr);
     }
 
     /**
@@ -35,7 +38,16 @@ public class WxPortalController {
                        @RequestParam("openid") String openid,
                        @RequestParam(name = "encrypt_type", required = false) String encType,
                        @RequestParam(name = "msg_signature", required = false) String msgSignature) {
-        return handler.post(requestBody, signature, timestamp, nonce, openid, encType, msgSignature);
+        WxGatewayConfig config = getWxMpConfig();
+        return handler.post(config, requestBody, signature, timestamp, nonce, openid, encType, msgSignature);
     }
 
+    private WxGatewayConfig getWxMpConfig() {
+        return WxGatewayConfig.builder()
+                .dev(properties.isDev())
+                .appId(properties.getAppId())
+                .token(properties.getToken())
+                .aesKey(properties.getAesKey())
+                .build();
+    }
 }
