@@ -1,13 +1,13 @@
 package com.github.lkqm.weixin.gateway.util;
 
 import com.github.lkqm.weixin.gateway.WxConfig;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
+import sun.misc.BASE64Decoder;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -18,6 +18,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 /**
@@ -62,7 +64,7 @@ public class WxUtils {
         String[] elements = {token, timestamp, nonce};
         Arrays.sort(elements);
         String text = StringUtils.join(elements, "");
-        return DigestUtils.sha1Hex(text);
+        return sha1Hex(text);
     }
 
     /**
@@ -97,14 +99,14 @@ public class WxUtils {
 
         byte[] original;
         try {
-            byte[] aesKey = Base64.decodeBase64(encodingAesKey + "=");
+            byte[] aesKey = decodeBase64(encodingAesKey + "=");
             // 设置解密模式为AES的CBC模式
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
             SecretKeySpec key_spec = new SecretKeySpec(aesKey, "AES");
             IvParameterSpec iv = new IvParameterSpec(
                     Arrays.copyOfRange(aesKey, 0, 16));
             cipher.init(Cipher.DECRYPT_MODE, key_spec, iv);
-            byte[] encrypted = Base64.decodeBase64(cipherText);
+            byte[] encrypted = decodeBase64(cipherText);
             original = cipher.doFinal(encrypted);
         } catch (Exception e) {
             throw new RuntimeException("微信消息密文解析失败", e);
@@ -193,4 +195,33 @@ public class WxUtils {
         }
 
     }
+
+    @SneakyThrows
+    public static byte[] decodeBase64(String source) {
+        BASE64Decoder decoder = new BASE64Decoder();
+        return decoder.decodeBuffer(source);
+    }
+
+    public static String sha1Hex(String source) {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-1");
+            return bytesToHex((md.digest(StringUtils.getBytesUTF8(source))));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Never happen", e);
+        }
+    }
+
+    private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
+
+    public static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for (int j = 0; j < bytes.length; j++) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = HEX_ARRAY[v >>> 4];
+            hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
+
 }

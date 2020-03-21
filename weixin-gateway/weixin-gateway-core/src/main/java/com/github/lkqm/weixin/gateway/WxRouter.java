@@ -41,17 +41,17 @@ public class WxRouter {
     }
 
 
-    private List<WxRouteRule> getMatchRules(Message wxMessage) {
+    private List<WxRouteRule> getMatchRules(Message message) {
         List<WxRouteRule> matchRules = new ArrayList<>();
         for (final WxRouteRule rule : this.rules) {
-            if (rule.test(wxMessage)) {
+            if (rule.test(message)) {
                 matchRules.add(rule);
             }
         }
         return matchRules;
     }
 
-    private List<Future<?>> executeRules(final Message wxMessage, List<WxRouteRule> matchRules) {
+    private List<Future<?>> executeRules(final Message message, List<WxRouteRule> matchRules) {
         List<Future<?>> futures = new ArrayList<>();
         for (final WxRouteRule rule : matchRules) {
             final WxHandler handler = rule.getHandler();
@@ -62,7 +62,7 @@ public class WxRouter {
             Future<?> future = this.executorService.submit(new Runnable() {
                 @Override
                 public void run() {
-                    handler.handle(wxMessage);
+                    handler.handle(message);
                 }
             });
             futures.add(future);
