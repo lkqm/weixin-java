@@ -1,4 +1,4 @@
-package com.github.lkqm.weixin.gateway.core;
+package com.github.lkqm.weixin.gateway;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +30,7 @@ public class WxRouter {
         });
     }
 
-    public void route(final WxRouteMessage message) {
+    public void route(final Message message) {
         List<WxRouteRule> matchRules = getMatchRules(message);
         if (matchRules.size() == 0) {
             log.info("Can't find handler for message: \n{}", message.getXml());
@@ -41,7 +41,7 @@ public class WxRouter {
     }
 
 
-    private List<WxRouteRule> getMatchRules(WxRouteMessage wxMessage) {
+    private List<WxRouteRule> getMatchRules(Message wxMessage) {
         List<WxRouteRule> matchRules = new ArrayList<>();
         for (final WxRouteRule rule : this.rules) {
             if (rule.test(wxMessage)) {
@@ -51,7 +51,7 @@ public class WxRouter {
         return matchRules;
     }
 
-    private List<Future<?>> executeRules(final WxRouteMessage wxMessage, List<WxRouteRule> matchRules) {
+    private List<Future<?>> executeRules(final Message wxMessage, List<WxRouteRule> matchRules) {
         List<Future<?>> futures = new ArrayList<>();
         for (final WxRouteRule rule : matchRules) {
             final WxHandler handler = rule.getHandler();
@@ -62,7 +62,7 @@ public class WxRouter {
             Future<?> future = this.executorService.submit(new Runnable() {
                 @Override
                 public void run() {
-                    handler.execute(wxMessage);
+                    handler.handle(wxMessage);
                 }
             });
             futures.add(future);
@@ -71,7 +71,7 @@ public class WxRouter {
         return futures;
     }
 
-    private void recordFutureTask(final WxRouteMessage wxMessage, final List<Future<?>> futureTasks) {
+    private void recordFutureTask(final Message wxMessage, final List<Future<?>> futureTasks) {
         if (futureTasks.size() == 0) return;
         this.executorService.submit(new Runnable() {
             @Override

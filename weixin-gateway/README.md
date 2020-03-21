@@ -26,11 +26,11 @@
     ```
 2. 添加配置(application.properties)
     ```properties
-    wx.gateway.dev = false
-    wx.gateway.uri = /wx/mp/api
-    wx.gateway.appId = @appId
-    wx.gateway.token = @token
-    wx.gateway.aesKey = @aesKey
+    wx.gateway.dev = false                 # 开发者模式, 处理消息跳过签名校验
+    wx.gateway.prefix = /wx/gateway        # 设置回掉路径前缀, 完整地址: /wx/gateway/{key}
+    wx.gateway.config.KEY1.appId = @appId  # 配置一个微信配置访问路径key=KEY1
+    wx.gateway.config.KEY1.token = @token
+    wx.gateway.config.KEY1.aesKey = @aesKey
     ```
 3. 增加相关的业务处理器
     ```java

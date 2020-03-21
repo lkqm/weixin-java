@@ -1,10 +1,10 @@
 package com.github.lkqm.weixin.gateway.app.handler;
 
 
+import com.github.lkqm.weixin.gateway.annotation.WxController;
+import com.github.lkqm.weixin.gateway.annotation.WxEvent;
 import com.github.lkqm.weixin.gateway.base.WxBaseEvent;
 import com.github.lkqm.weixin.gateway.base.event.ScanEventMessage;
-import com.github.lkqm.weixin.gateway.core.annotation.WxController;
-import com.github.lkqm.weixin.gateway.core.annotation.WxEvent;
 
 /**
  * 公众号关注事件

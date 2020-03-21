@@ -1,6 +1,7 @@
-package com.github.lkqm.weixin.gateway.core.util;
+package com.github.lkqm.weixin.gateway.util;
 
-import com.github.lkqm.weixin.gateway.core.WxGatewayConfig;
+import com.github.lkqm.weixin.gateway.WxConfig;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -23,6 +24,7 @@ import java.util.Arrays;
  * 微信相关工具类
  */
 @Slf4j
+@UtilityClass
 public class WxUtils {
 
     private static final Charset CHARSET = StandardCharsets.UTF_8;
@@ -59,14 +61,14 @@ public class WxUtils {
     private static String signature(String token, String timestamp, String nonce) {
         String[] elements = {token, timestamp, nonce};
         Arrays.sort(elements);
-        String text = Utils.join(elements, "");
+        String text = StringUtils.join(elements, "");
         return DigestUtils.sha1Hex(text);
     }
 
     /**
      * 解析AES密文xml
      */
-    public static String decryptXml(WxGatewayConfig appConfig, String encryptedXml) {
+    public static String decryptXml(WxConfig appConfig, String encryptedXml) {
         String cipherText = extractEncryptPart(encryptedXml);
         return decrypt(appConfig, cipherText);
     }
@@ -89,7 +91,7 @@ public class WxUtils {
     /**
      * 对密文xml继续解密
      */
-    private static String decrypt(WxGatewayConfig appConfig, String cipherText) {
+    private static String decrypt(WxConfig appConfig, String cipherText) {
         final String appId = appConfig.getAppId();
         final String encodingAesKey = appConfig.getAesKey();
 

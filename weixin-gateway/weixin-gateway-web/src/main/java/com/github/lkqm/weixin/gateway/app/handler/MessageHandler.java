@@ -1,8 +1,8 @@
 package com.github.lkqm.weixin.gateway.app.handler;
 
+import com.github.lkqm.weixin.gateway.annotation.WxController;
+import com.github.lkqm.weixin.gateway.annotation.WxMessage;
 import com.github.lkqm.weixin.gateway.base.message.*;
-import com.github.lkqm.weixin.gateway.core.annotation.WxController;
-import com.github.lkqm.weixin.gateway.core.annotation.WxMessage;
 
 /**
  * 普通消息处理

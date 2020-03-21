@@ -1,14 +1,19 @@
 package com.github.lkqm.springboot.weixin.gateway;
 
+import com.github.lkqm.weixin.gateway.WxConfig;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * 微信配置
+ * 微信网关配置
  */
 @ConfigurationProperties(prefix = "wx.gateway")
 @Data
-public class WxGatewayProperties {
+public class WxGatewayProperties implements Serializable {
 
     /**
      * 开发模式, 不会微信校验消息的准确性
@@ -16,23 +21,13 @@ public class WxGatewayProperties {
     private boolean dev = false;
 
     /**
-     * 公众号回掉地址uri
+     * 路径前缀
      */
-    private String uri = "/";
+    private String prefix = "/wx/gateway";
 
     /**
-     * 微信公众号appId
+     * 微信配置
      */
-    private String appId;
-
-    /**
-     * 微信公众号token
-     */
-    private String token;
-
-    /**
-     * 微信公众号aesKey
-     */
-    private String aesKey;
+    Map<String, WxConfig> configs = new HashMap<>();
 
 }

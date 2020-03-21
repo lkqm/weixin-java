@@ -1,8 +1,8 @@
-package com.github.lkqm.weixin.gateway.core;
+package com.github.lkqm.weixin.gateway;
 
-import com.github.lkqm.weixin.gateway.core.annotation.WxEvent;
-import com.github.lkqm.weixin.gateway.core.annotation.WxMessage;
-import com.github.lkqm.weixin.gateway.core.util.ReflectionUtils;
+import com.github.lkqm.weixin.gateway.annotation.WxEvent;
+import com.github.lkqm.weixin.gateway.annotation.WxMessage;
+import com.github.lkqm.weixin.gateway.util.ReflectionUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
@@ -15,19 +15,19 @@ import java.util.Map;
  * 路由注册
  */
 @Slf4j
-public class WxRouterRegister {
+public class WxRegister {
 
     private WxRouter router;
 
     private Map<String, Method> registeredMessages = new HashMap<>();
     private Map<String, Method> registeredEvents = new HashMap<>();
 
-    private WxRouterRegister(WxRouter router) {
+    private WxRegister(WxRouter router) {
         this.router = router;
     }
 
-    public static WxRouterRegister create(WxRouter router) {
-        return new WxRouterRegister(router);
+    public static WxRegister create(WxRouter router) {
+        return new WxRegister(router);
     }
 
     /**
@@ -70,7 +70,7 @@ public class WxRouterRegister {
         String event = wxEvent.value();
         Method eventMethod = registeredEvents.get(event);
         if (eventMethod != null) {
-            throw new IllegalArgumentException("wx router register failed, duplicated event: " + methodName + " ," + ReflectionUtils.getMethodFullName(eventMethod));
+            throw new IllegalArgumentException("wx router register failed, duplicated event=[" + event + "]: " + methodName + " ," + ReflectionUtils.getMethodFullName(eventMethod));
         }
 
         WxHandler handler = WxHandler.create(invoker, method);
@@ -91,7 +91,7 @@ public class WxRouterRegister {
 
         Method orgMessageMethod = registeredMessages.get(msgType);
         if (orgMessageMethod != null) {
-            throw new IllegalArgumentException("wx router register failed, duplicated message type: " + methodName + " ," + ReflectionUtils.getMethodFullName(orgMessageMethod));
+            throw new IllegalArgumentException("wx router register failed, duplicated message type=[" + msgType + "]: " + methodName + " ," + ReflectionUtils.getMethodFullName(orgMessageMethod));
         }
 
         WxHandler handler = WxHandler.create(invoker, method);

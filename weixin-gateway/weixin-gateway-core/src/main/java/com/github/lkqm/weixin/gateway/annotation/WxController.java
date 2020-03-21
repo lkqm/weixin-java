@@ -1,4 +1,4 @@
-package com.github.lkqm.weixin.gateway.core.annotation;
+package com.github.lkqm.weixin.gateway.annotation;
 
 import org.springframework.stereotype.Component;
 

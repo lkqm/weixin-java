@@ -1,16 +1,20 @@
 package com.github.lkqm.springboot.weixin.gateway;
 
-import com.github.lkqm.weixin.gateway.core.WxGatewayConfig;
-import com.github.lkqm.weixin.gateway.core.WxPortalHandler;
+import com.github.lkqm.weixin.gateway.WxConfig;
+import com.github.lkqm.weixin.gateway.WxPortalHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * 微信回掉入口控制器
  */
-@Slf4j
+@RestController
+@RequestMapping("${wx.gateway.prefix:/wx/gateway}/{key}")
 @AllArgsConstructor
+@Slf4j
 public class WxPortalController {
 
     private WxPortalHandler handler;
@@ -21,8 +25,8 @@ public class WxPortalController {
      */
     @GetMapping(produces = "text/plain;charset=utf-8")
     @ResponseBody
-    public String get(String signature, String timestamp, String nonce, String echostr) {
-        WxGatewayConfig config = getWxMpConfig();
+    public String get(@PathVariable String key, String signature, String timestamp, String nonce, String echostr) {
+        WxConfig config = getWxMpConfig(key);
         return handler.get(config, signature, timestamp, nonce, echostr);
     }
 
@@ -31,23 +35,24 @@ public class WxPortalController {
      */
     @PostMapping(produces = "application/xml; charset=utf-8")
     @ResponseBody
-    public String post(@RequestBody String requestBody,
+    public String post(@PathVariable String key,
                        @RequestParam("signature") String signature,
                        @RequestParam("timestamp") String timestamp,
                        @RequestParam("nonce") String nonce,
                        @RequestParam("openid") String openid,
                        @RequestParam(name = "encrypt_type", required = false) String encType,
-                       @RequestParam(name = "msg_signature", required = false) String msgSignature) {
-        WxGatewayConfig config = getWxMpConfig();
-        return handler.post(config, requestBody, signature, timestamp, nonce, openid, encType, msgSignature);
+                       @RequestParam(name = "msg_signature", required = false) String msgSignature,
+                       @RequestBody String requestBody) {
+        WxConfig config = getWxMpConfig(key);
+        return handler.post(properties.isDev(), config, requestBody, signature, timestamp, nonce, openid, encType, msgSignature);
     }
 
-    private WxGatewayConfig getWxMpConfig() {
-        return WxGatewayConfig.builder()
-                .dev(properties.isDev())
-                .appId(properties.getAppId())
-                .token(properties.getToken())
-                .aesKey(properties.getAesKey())
-                .build();
+    private WxConfig getWxMpConfig(String key) {
+        Map<String, WxConfig> configs = properties.getConfigs();
+        WxConfig config = configs.get(key);
+        if (config == null) {
+            throw new RuntimeException("未找到对应微信配置key=" + key);
+        }
+        return config;
     }
 }

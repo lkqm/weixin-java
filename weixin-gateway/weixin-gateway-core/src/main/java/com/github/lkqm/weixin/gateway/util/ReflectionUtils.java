@@ -1,17 +1,19 @@
-package com.github.lkqm.weixin.gateway.core.util;
+package com.github.lkqm.weixin.gateway.util;
+
+import lombok.experimental.UtilityClass;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
  * ReflectionUtils
- *
- * @author Mario Luo
- * @date 2019.01.03 12:08
  */
+@UtilityClass
 public class ReflectionUtils {
 
-
+    /**
+     * 获取指定类型注解
+     */
     public static <T> T getAnnotation(Annotation[] annotations, Class<T> targetClass) {
         for (Annotation one : annotations) {
             if (targetClass.isAssignableFrom(one.annotationType())) {
@@ -63,7 +65,7 @@ public class ReflectionUtils {
         String fullMethodName = new StringBuilder()
                 .append(className)
                 .append(".").append(methodName)
-                .append("(").append(Utils.join(typeNames, ","))
+                .append("(").append(StringUtils.join(typeNames, ","))
                 .append(")")
                 .toString();
         return fullMethodName;

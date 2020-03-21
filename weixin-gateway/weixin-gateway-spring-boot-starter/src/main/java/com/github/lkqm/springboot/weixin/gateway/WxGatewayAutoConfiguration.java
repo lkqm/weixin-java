@@ -1,33 +1,31 @@
 package com.github.lkqm.springboot.weixin.gateway;
 
-import com.github.lkqm.weixin.gateway.core.WxPortalHandler;
-import com.github.lkqm.weixin.gateway.core.WxRouter;
-import com.github.lkqm.weixin.gateway.core.WxRouterRegister;
-import com.github.lkqm.weixin.gateway.core.annotation.WxController;
+import com.github.lkqm.weixin.gateway.WxPortalHandler;
+import com.github.lkqm.weixin.gateway.WxRegister;
+import com.github.lkqm.weixin.gateway.WxRouter;
+import com.github.lkqm.weixin.gateway.annotation.WxController;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.Resource;
 
 @Configuration
 @EnableConfigurationProperties(WxGatewayProperties.class)
 @Slf4j
 public class WxGatewayAutoConfiguration {
 
-    @Autowired
+    @Resource
     private ApplicationContext ctx;
-    @Autowired
-    private WxGatewayProperties properties;
 
     @Bean
     @ConditionalOnMissingBean
     public WxRouter wxMessageRouter() {
         WxRouter router = new WxRouter();
-        WxRouterRegister.create(router).register(ctx.getBeansWithAnnotation(WxController.class).values());
+        WxRegister.create(router).register(ctx.getBeansWithAnnotation(WxController.class).values());
         return router;
     }
 
@@ -38,11 +36,8 @@ public class WxGatewayAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnWebApplication
-    public WxPortalController wxPortalController(WxPortalHandler handler) {
-        WxPortalController controller = new WxPortalController(handler);
-        WxPortalControllerRegister.registry(ctx, controller, properties.getUri());
-        return controller;
+    public WxPortalController wxPortalController(WxPortalHandler handler, WxGatewayProperties properties) {
+        return new WxPortalController(handler, properties);
     }
 
 }

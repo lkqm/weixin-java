@@ -1,10 +1,10 @@
-package com.github.lkqm.weixin.gateway.core;
+package com.github.lkqm.weixin.gateway.util;
 
 import com.alibaba.fastjson.JSONObject;
-import com.github.lkqm.weixin.gateway.core.annotation.WxBody;
-import com.github.lkqm.weixin.gateway.core.annotation.WxParam;
-import com.github.lkqm.weixin.gateway.core.util.ReflectionUtils;
-import lombok.AllArgsConstructor;
+import com.github.lkqm.weixin.gateway.Message;
+import com.github.lkqm.weixin.gateway.annotation.WxBody;
+import com.github.lkqm.weixin.gateway.annotation.WxParam;
+import lombok.experimental.UtilityClass;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
@@ -16,16 +16,13 @@ import java.util.Set;
 /**
  * 微信路由处理方法参数解析器
  */
-@AllArgsConstructor
-public class WxHandlerArguments {
-
-    private Method method;
-    private WxRouteMessage message;
+@UtilityClass
+public class ArgumentUtils {
 
     /**
      * Resolve handle method args
      */
-    public Object[] resolveArguments() {
+    public static Object[] resolveArguments(Method method, Message message) {
         Class<?>[] parameterTypes = method.getParameterTypes();
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
         Object[] results = new Object[parameterTypes.length];
@@ -59,7 +56,7 @@ public class WxHandlerArguments {
     /**
      * 获取注解@WxParam的参数的值
      */
-    private Object getArgumentWithAnnotation(WxRouteMessage message, Class type, String paramName) {
+    private static Object getArgumentWithAnnotation(Message message, Class type, String paramName) {
         Map<String, Object> xmlMap = message.getXmlMap();
         final String key = paramName.trim();
         Object orgValue = xmlMap.get(key);
@@ -99,7 +96,7 @@ public class WxHandlerArguments {
     /**
      * 普通Bean注入, 按照驼峰命名
      */
-    private Object getArgumentJavaBean(WxRouteMessage message, Class type) {
+    private static Object getArgumentJavaBean(Message message, Class type) {
         Class[] ignoreTypes = {Array.class, List.class, Map.class, Set.class, String.class, Character.class,
                 Byte.class, Short.class, Integer.class, Long.class, Float.class, Double.class};
         for (Class ignoreType : ignoreTypes) {

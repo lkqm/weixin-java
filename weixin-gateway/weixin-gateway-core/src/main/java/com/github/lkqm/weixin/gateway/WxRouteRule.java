@@ -1,7 +1,7 @@
-package com.github.lkqm.weixin.gateway.core;
+package com.github.lkqm.weixin.gateway;
 
 
-import com.github.lkqm.weixin.gateway.core.util.Utils;
+import com.github.lkqm.weixin.gateway.util.StringUtils;
 import lombok.Getter;
 
 /**
@@ -49,17 +49,17 @@ public class WxRouteRule {
     /**
      * 测试是否规则匹配
      */
-    public boolean test(WxRouteMessage wxMessage) {
+    public boolean test(Message wxMessage) {
         String wxMsgType = wxMessage.getMsgType();
         String wxEvent = wxMessage.getEvent();
 
-        if (!Utils.equalsIgnoreCase(wxMsgType, msgType)) {
+        if (!StringUtils.equalsIgnoreCase(wxMsgType, msgType)) {
             return false;
         }
 
 
-        if (Utils.equalsIgnoreCase(wxMsgType, "event")
-                && !Utils.equalsIgnoreCase(wxEvent, event)) {
+        if (StringUtils.equalsIgnoreCase(wxMsgType, "event")
+                && !StringUtils.equalsIgnoreCase(wxEvent, event)) {
             return false;
         }
 

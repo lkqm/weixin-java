@@ -1,5 +1,7 @@
-package com.github.lkqm.weixin.gateway.core;
+package com.github.lkqm.weixin.gateway;
 
+
+import com.github.lkqm.weixin.gateway.util.ArgumentUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -31,8 +33,8 @@ public class WxHandler {
     /**
      * Execute handle method
      */
-    public void execute(WxRouteMessage message) {
-        Object[] args = resolveMethodArguments(message);
+    public void handle(Message message) {
+        Object[] args = ArgumentUtils.resolveArguments(method, message);
         try {
             method.invoke(invoker, args);
         } catch (IllegalAccessException e) {
@@ -40,11 +42,6 @@ public class WxHandler {
         } catch (InvocationTargetException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private Object[] resolveMethodArguments(WxRouteMessage message) {
-        WxHandlerArguments resolver = new WxHandlerArguments(method, message);
-        return resolver.resolveArguments();
     }
 
 }

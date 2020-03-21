@@ -1,10 +1,10 @@
 package com.github.lkqm.weixin.gateway.app.handler;
 
 
+import com.github.lkqm.weixin.gateway.annotation.WxController;
+import com.github.lkqm.weixin.gateway.annotation.WxEvent;
 import com.github.lkqm.weixin.gateway.base.invoice.InvoiceAuthEventMessage;
 import com.github.lkqm.weixin.gateway.base.invoice.InvoiceResultEventMessage;
-import com.github.lkqm.weixin.gateway.core.annotation.WxController;
-import com.github.lkqm.weixin.gateway.core.annotation.WxEvent;
 
 /**
  * 商户电子发票相关事件
