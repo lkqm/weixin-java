@@ -26,11 +26,17 @@
     ```
 2. 添加配置(application.properties)
     ```properties
+    wx.gateway.enabled = ture              # 是否开启, 关闭后不会自动注入WxPortalController
     wx.gateway.dev = false                 # 开发者模式, 处理消息跳过签名校验
     wx.gateway.prefix = /wx/gateway        # 设置回掉路径前缀, 完整地址: /wx/gateway/{key}
     wx.gateway.config.KEY1.appId = @appId  # 配置一个微信配置访问路径key=KEY1
     wx.gateway.config.KEY1.token = @token
     wx.gateway.config.KEY1.aesKey = @aesKey
+    
+    wx.gateway.pool.coreSize = 10          #核心线程大小
+    wx.gateway.pool.maxSize = 100          #最大线程大小
+    wx.gateway.pool.keepAlive = 5000       #空闲线程存活时间(ms)
+    wx.gateway.pool.queueCapacity=         #工作队列大小
     ```
 3. 增加相关的业务处理器
     ```java

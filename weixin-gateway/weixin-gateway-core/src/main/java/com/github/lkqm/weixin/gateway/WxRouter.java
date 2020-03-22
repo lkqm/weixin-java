@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -15,80 +17,59 @@ public class WxRouter {
 
     private final List<WxRouteRule> rules = new ArrayList<>();
 
-    private ExecutorService executorService;
+    private ExecutorService executor;
 
-    private static int DEFAULT_THREAD_POOL_SIZE = 100;
-
-    public WxRouter() {
-        this.executorService = Executors.newFixedThreadPool(DEFAULT_THREAD_POOL_SIZE, new ThreadFactory() {
+    public WxRouter(int threadSize) {
+        this.executor = Executors.newFixedThreadPool(threadSize, new ThreadFactory() {
             private final AtomicInteger threadNumber = new AtomicInteger(1);
 
             @Override
             public Thread newThread(Runnable task) {
-                return new Thread(task, "pool-wx-router-" + threadNumber.getAndIncrement());
+                return new Thread(task, "wx-router-" + threadNumber.getAndIncrement());
             }
         });
+    }
+
+    public WxRouter(ExecutorService executor) {
+        if (executor == null) {
+            throw new IllegalArgumentException("Arguments executor must not be null.");
+        }
+        this.executor = executor;
     }
 
     public void route(final Message message) {
-        List<WxRouteRule> matchRules = getMatchRules(message);
-        if (matchRules.size() == 0) {
-            log.info("Can't find handler for message: \n{}", message.getXml());
+        WxRouteRule rule = getMatchRule(message);
+        if (rule == null) {
+            log.info("No handler for message: ToUserName={}, FromUserName={}, CreateTime={}, MsgType={}, Event={}",
+                    message.getToUserName(), message.getFromUserName(), message.getCreateTime(), message.getMsgType(), message.getEvent());
             return;
         }
-        List<Future<?>> futures = executeRules(message, matchRules);
-        recordFutureTask(message, futures);
-    }
-
-
-    private List<WxRouteRule> getMatchRules(Message message) {
-        List<WxRouteRule> matchRules = new ArrayList<>();
-        for (final WxRouteRule rule : this.rules) {
-            if (rule.test(message)) {
-                matchRules.add(rule);
-            }
-        }
-        return matchRules;
-    }
-
-    private List<Future<?>> executeRules(final Message message, List<WxRouteRule> matchRules) {
-        List<Future<?>> futures = new ArrayList<>();
-        for (final WxRouteRule rule : matchRules) {
-            final WxHandler handler = rule.getHandler();
-            if (handler == null) {
-                log.warn("Illegal WxRouteRule, handler can't be null");
-                continue;
-            }
-            Future<?> future = this.executorService.submit(new Runnable() {
-                @Override
-                public void run() {
-                    handler.handle(message);
-                }
-            });
-            futures.add(future);
+        final WxHandler handler = rule.getHandler();
+        if (handler == null) {
+            log.info("Illegal WxRouteRule, handler must not be null: {}", rule);
+            return;
         }
 
-        return futures;
-    }
-
-    private void recordFutureTask(final Message wxMessage, final List<Future<?>> futureTasks) {
-        if (futureTasks.size() == 0) return;
-        this.executorService.submit(new Runnable() {
+        this.executor.submit(new Runnable() {
             @Override
             public void run() {
-                for (Future<?> future : futureTasks) {
-                    try {
-                        future.get();
-                        log.debug("End session access: fromUserName={}", wxMessage.getFromUserName());
-                    } catch (InterruptedException e) {
-                        log.error("Error happened when wait task finish", e);
-                        Thread.currentThread().interrupt();
-                    } catch (ExecutionException e) {
-                        log.error("Error happened when wait task finish", e);
-                    }
+                try {
+                    handler.handle(message);
+                    log.debug("End session access: fromUserName={}", message.getFromUserName());
+                } catch (Exception e) {
+                    log.error("Error happened when wait task finish", e);
                 }
             }
         });
+    }
+
+    private WxRouteRule getMatchRule(Message message) {
+        for (WxRouteRule rule : this.rules) {
+            if (rule.test(message)) {
+                return rule;
+            }
+        }
+        return null;
     }
 
     /**
